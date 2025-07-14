@@ -1,0 +1,11 @@
+{
+  "data": [
+    {
+      "key": "Dashboard",
+      "path": "/dashboard",
+      "icon": "DashboardOutlined",
+      "permissions": ["view.dashboard"]
+    }
+  ]
+}
+
