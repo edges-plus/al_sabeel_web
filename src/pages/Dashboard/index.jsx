@@ -1,37 +1,90 @@
 import React from "react";
-import { Grid, Box, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Container from "@components/DashboardLayout/container";
 
+import StatCards from "./StatCards";
+import ManagementSections from "./ManagementSections";
+import EarningsChart from "./EarningsChart";
+import TopEmployees from "./TopEmployees";
+import RecentFeedback from "./RecentFeedback";
+
 const Dashboard = () => {
-
-
-      let user = JSON.parse(localStorage.getItem("user"));
-
-  let userName = user?.name
+  const user = JSON.parse(localStorage.getItem("user")) || {};
+  const userName = user?.name
     ? user.name.charAt(0).toUpperCase() + user.name.slice(1)
     : "User";
-
-  let lastLogin = user?.lastLogin
+  const lastLogin = user?.lastLogin
     ? new Date(user.lastLogin).toLocaleString()
     : "N/A";
 
   return (
-    <Container divider={false}>
-      <Grid container spacing={3} sx={{ width: "100%" }}>
-        {/* Page Heading */}
-        <Grid item xs={12}>
-          <Box sx={{ paddingLeft: 6 }}>
-            <Typography variant="h2" sx={{ fontSize: "2rem", fontWeight: 500 }}>
-              Welcome back {userName}
-            </Typography>
-            <Typography variant="body1" sx={{ fontSize: "1rem" }}>
-              Last login: {lastLogin}
-            </Typography>
-          </Box>
-        </Grid>
+    <Container
+      divider={false}
+      sx={{
+        width: "100%",
+        maxWidth: "100% !important",
+        px: { xs: 2, md: 4 },
+        py: 3,
+      }}
+    >
+      {/* Header */}
+      <Box sx={{ mb: 3 }}>
+        <Typography variant="h5" fontWeight={600}>
+          Welcome back, {userName}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Last login: {lastLogin}
+        </Typography>
+      </Box>
 
-    
-      </Grid>
+      {/* Stat Cards */}
+      <Box sx={{ mb: 3 }}>
+        <StatCards />
+      </Box>
+
+      {/* Job Schedule + Earnings Report */}
+      <Box display="flex" flexWrap="wrap" gap={2} mb={3}>
+        <Box
+          flex="1 1 48%"
+          minWidth="300px"
+          bgcolor="#f9f9f9"
+          borderRadius={2}
+          p={2}
+        >
+          <ManagementSections />
+        </Box>
+        <Box
+          flex="1 1 48%"
+          minWidth="300px"
+          bgcolor="#f9f9f9"
+          borderRadius={2}
+          p={2}
+        >
+          <EarningsChart />
+        </Box>
+      </Box>
+
+      {/* Top Employees + Recent Jobs */}
+      <Box display="flex" flexWrap="wrap" gap={2}>
+        <Box
+          flex="1 1 48%"
+          minWidth="300px"
+          bgcolor="#f9f9f9"
+          borderRadius={2}
+          p={2}
+        >
+          <TopEmployees />
+        </Box>
+        <Box
+          flex="1 1 48%"
+          minWidth="300px"
+          bgcolor="#f9f9f9"
+          borderRadius={2}
+          p={2}
+        >
+          <RecentFeedback />
+        </Box>
+      </Box>
     </Container>
   );
 };
