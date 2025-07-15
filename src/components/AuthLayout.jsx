@@ -64,7 +64,7 @@ const AuthLayout = ({
                 xs: '180px',  // Mobile
                 sm: '220px',  // Tablet
                 md: '300px',  // Desktop
-                lg: '350px'   // Large screens
+                lg: '300px'   // Large screens
               },
               height: 'auto',
               marginBottom: useVerticalLayout ? 0 : 6

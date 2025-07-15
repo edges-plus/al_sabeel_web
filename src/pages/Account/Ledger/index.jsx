@@ -138,11 +138,7 @@ const Index = () => {
           handleChange={handleChange}
           errors={errors}
         />
-        <Grid container spacing={2}>
-          <Grid  >
-            <Button type="submit" variant="contained" color="primary">
-              {id ? "Update" : "Save"}
-            </Button>
+        <Grid size={12} sx={{ mt: 3, display: "flex", justifyContent: "space-around" }}>
             <Button
               variant="contained"
               color="secondary"
@@ -151,7 +147,9 @@ const Index = () => {
             >
               Cancel
             </Button>
-          </Grid>
+              <Button type="submit" variant="contained" color="primary">
+              {id ? "Update" : "Save"}
+            </Button>
         </Grid>
       </form>
     </HeaderContainer>
