@@ -61,7 +61,7 @@ const HeaderContainer = ({
           <Typography
             variant="h6"
             component="h3"
-            color="brand.darkBlue"
+            color="brand.edgesBlack"
             sx={{
              minWidth: 'unset',
               flexShrink: 0

@@ -39,10 +39,10 @@ export default function FormTextField({
         borderWidth: "1px",
       },
       "&:hover fieldset": {
-        borderColor: "brand.neonBlue",
+        borderColor: "brand.main",
       },
       "&.Mui-focused fieldset": {
-        borderColor: "brand.neonBlue",
+        borderColor: "brand.dark",
       },
       "&.Mui-error fieldset": {
         borderColor: "mUiColor.red", 

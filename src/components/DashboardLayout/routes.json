@@ -5,6 +5,78 @@
       "path": "/dashboard",
       "icon": "DashboardOutlined",
       "permissions": ["view.dashboard"]
+    },
+    {
+      "key": "Accounts",
+      "icon": "AccountBalance",
+      "sub": [
+        {
+          "key": "Expense Voucher",
+          "path": "/ExpenseVoucher",
+          "icon": "RadarChartOutlined",
+          "permissions": ["accounts.expenseVoucher"]
+        },
+         {
+          "key": "Closing-entries",
+          "path": "/ClosingEntries",
+          "icon": "RadarChartOutlined",
+          "permissions": ["accounts.closingEntries"]
+        },  
+        {
+          "key": "Payments",
+          "path": "/Payments",
+          "icon": "RadarChartOutlined",
+          "permissions": ["accounts.payments"]
+        },
+        {
+          "key": "Receipts",
+          "path": "/Receipts",
+          "icon": "RadarChartOutlined",
+          "permissions": ["accounts.receipts"]
+        },
+        {
+          "key": "Other Purchases",
+          "path": "/OtherPurchases",
+          "icon": "RadarChartOutlined",
+          "permissions": ["accounts.otherPurchases"]
+        },
+        {
+          "key": "Other Sale",
+          "path": "/OtherSale",
+          "icon": "RadarChartOutlined",
+          "permissions": ["accounts.otherSales"]
+        },
+        {
+          "key": "Internal Fund-Transfer",
+          "path": "/InternalFundTransfer",
+          "icon": "RadarChartOutlined",
+          "permissions": ["accounts.internalFundTransfers"]
+        },
+        {
+          "key": "Reconciliation",
+          "path": "/Reconciliation",
+          "icon": "RadarChartOutlined",
+          "permissions": ["accounts.reconciliation"]
+        },
+        {
+          "key": "Invoices",
+          "path": "/invoices",
+          "icon": "RadarChartOutlined",
+          "permissions": ["accounts.invoices"]
+        },
+        {
+          "key": "Journal-entries",
+          "path": "/JournalEntries",
+          "icon": "RadarChartOutlined",
+          "permissions": ["accounts.journalEntries"]
+        },
+        {
+          "key": "Bulk Entry",
+          "path": "/BulkEntry",
+          "icon": "RadarChartOutlined",
+          "permissions": ["accounts.bulkEntry"]
+        }
+      ]
     }
   ]
 }
