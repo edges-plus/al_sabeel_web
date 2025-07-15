@@ -37,4 +37,34 @@ export const routes = [
     exact: true,
     private: true,
   },
+   {
+    path: "/Settings",
+    component: lazy(() => import("@pages/Settings")),
+    exact: true,
+    private: true,
+  },
+   {
+    path: "/Settings/Ledger/view",
+    component: lazy(() => import("@pages/Account/Ledger/LedgerTree")),
+    exact: true,
+    private: true,
+  },
+   {
+    path: "/Settings/LedgerGroup",
+    component: lazy(() => import("@pages/Account/LedgerGroup")),
+    exact: true,
+    private: true,
+  },
+   {
+    path: "/Settings/Ledger",
+    component: lazy(() => import("@pages/Account/Ledger")),
+    exact: true,
+    private: true,
+  },
+    {
+    path: "/Settings/CurrencyManagement",
+    component: lazy(() => import("@pages/Settings/CurrencyManagement")),
+    exact: true,
+    private: true,
+  },
 ];

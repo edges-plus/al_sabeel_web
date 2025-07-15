@@ -20,7 +20,7 @@ const Index = () => {
       }}
     >
       {/* Company Logo */}
-      <Box component="img" src="/icons/AlSabeel_logo2.png" alt="Company Logo" sx={{ width: 220, mb: 2 }} />
+      <Box component="img" src="/icons/AlSabeel_logo.png" alt="Company Logo" sx={{ width: 220, mb: 2 }} />
 
       {/* Error Icon */}
 
