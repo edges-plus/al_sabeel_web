@@ -20,7 +20,7 @@ const theme = createTheme({
     },
     brand:{
       main:"#059880",
-      light: "#56E5FF", // Light 
+      dark: "#016C5C", // Light 
       edgesBlack:"#202020",
       electricBlue:"#56E5FF",
       neonBlue:"#04D9FF",
