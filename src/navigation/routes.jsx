@@ -37,33 +37,69 @@ export const routes = [
     exact: true,
     private: true,
   },
-   {
+  {
     path: "/Settings",
     component: lazy(() => import("@pages/Settings")),
     exact: true,
     private: true,
   },
-   {
+  {
     path: "/Settings/Ledger/view",
     component: lazy(() => import("@pages/Account/Ledger/LedgerTree")),
     exact: true,
     private: true,
   },
-   {
+  {
     path: "/Settings/LedgerGroup",
     component: lazy(() => import("@pages/Account/LedgerGroup")),
     exact: true,
     private: true,
   },
-   {
+  {
     path: "/Settings/Ledger",
     component: lazy(() => import("@pages/Account/Ledger")),
     exact: true,
     private: true,
   },
-    {
+  {
     path: "/Settings/CurrencyManagement",
     component: lazy(() => import("@pages/Settings/CurrencyManagement")),
+    exact: true,
+    private: true,
+  },
+  {
+    path: "/ExpenseVoucher",
+    component: lazy(() => import("@pages/Account/ExpenseVouchers")),
+    exact: true,
+    private: true,
+  },
+  {
+    path: "/ClosingEntries",
+    component: lazy(() => import("@pages/Account/ClosingEntries")),
+    exact: true,
+    private: true,
+  },
+  {
+    path: "/Payments",
+    component: lazy(() => import("@pages/Account/Payments")),
+    exact: true,
+    private: true,
+  },
+  {
+    path: "/Receipts",
+    component: lazy(() => import("@pages/Account/Receipts")),
+    exact: true,
+    private: true,
+  },
+  {
+    path: "/OtherPurchases",
+    component: lazy(() => import("@pages/Account/OtherPurchases")),
+    exact: true,
+    private: true,
+  },
+  {
+    path: "/OtherSale",
+    component: lazy(() => import("@pages/Account/OtherSale")),
     exact: true,
     private: true,
   },
