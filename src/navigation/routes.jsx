@@ -103,4 +103,40 @@ export const routes = [
     exact: true,
     private: true,
   },
+  {
+    path: "/InternalFundTransfer",
+    component: lazy(() => import("@pages/Account/InternalFundTransfer")),
+    exact: true,
+    private: true,
+  },
+  {
+    path: "/Reconciliation",
+    component: lazy(() => import("@pages/Account/Reconciliation")),
+    exact: true,
+    private: true,
+  },
+  {
+    path: "/invoices",
+    component: lazy(() => import("@pages/Account/Invoices")),
+    exact: true,
+    private: true,
+  },
+  {
+    path: "/JournalEntries",
+    component: lazy(() => import("@pages/Account/JournalEntries")),
+    exact: true,
+    private: true,
+  },
+  {
+    path: "/JournalEntries/:id",
+    component: lazy(() => import("@pages/Account/JournalEntries/JournalEntryDetail")),
+    exact: true,
+    private: true,
+  },
+  {
+    path: "/BulkEntry",
+    component: lazy(() => import("@pages/Account/BulkEntry")),
+    exact: true,
+    private: true,
+  },
 ];
