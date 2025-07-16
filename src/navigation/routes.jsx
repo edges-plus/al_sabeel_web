@@ -139,4 +139,10 @@ export const routes = [
     exact: true,
     private: true,
   },
+  {
+    path: "/CRM",
+    component: lazy(() => import("@pages/CRM")),
+    exact: true,
+    private: true,
+  },
 ];
