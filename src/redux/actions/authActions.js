@@ -6,8 +6,12 @@ import {
   LOGOUT,
   SET_PERMISSIONS
 } from "@root/redux/types.js";
+
+
 import { setTokens, removeTokens, getAccessToken } from "@helpers/localStorage";
 import { loaderOn, loaderOff } from "@actions/loaderAction";
+import { toast } from "react-toastify";
+
 
 export const login = (body) => async (dispatch) => {
 
@@ -85,11 +89,13 @@ export const logout = () => async (dispatch) => {
 };
 
 export const forgotPassword = (body) => async (dispatch) => {
+
   dispatch(loaderOn());
   try {
-    const { data } = await postApi("/forgotPassword", body);
-    const { success, data: response } = data;
-    if (success) {
+
+    const response = await postApi("/auth/forgotPassword", body);
+  
+    if (response.status === 200) {
       dispatch(loaderOff());
       return true;
     }
@@ -100,15 +106,17 @@ export const forgotPassword = (body) => async (dispatch) => {
   }
 };
 
-export const forgotPasswordConfirm = (body) => async (dispatch) => {
+export const forgotPasswordReset = (body) => async (dispatch) => {
   dispatch(loaderOn());
+
+  
   try {
-    const { data } = await postApi("/forgotReset", body);
-    const { success, data: response } = data;
-    if (success) {
-      dispatch(loaderOff());
-      return true;
-    }
+    const { data } = await postApi("/auth/forgetPasswordReset", body);
+  
+    const {status } = data;
+   toast.success("Password reset successful");
+  dispatch(loaderOff());
+  return true;
   } catch (error) {
     await errorHandler(error);
     dispatch(loaderOff());

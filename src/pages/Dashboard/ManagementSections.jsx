@@ -28,7 +28,7 @@ const ManagementSections = () => {
       name: "Service Management",
       description: "Track jobs, assign technicians, and monitor progress",
       icon: <BuildCircleIcon />,
-      onClick: () => navigate("/management/service"),
+      onClick: () => navigate("/ServiceManagement"),
     },
     {
       name: "Site Management",
@@ -36,7 +36,17 @@ const ManagementSections = () => {
       icon: <ApartmentIcon />,
       onClick: () => navigate("/management/site"),
     },
-  ];
+    {
+    name: "Accounts",
+    description: "Manage financial transactions and accounts",
+    icon: <ApartmentIcon />,
+  },
+  {
+    name: "Reports",
+    description:"Generate detailed reports on operations and finances",
+    icon: <ApartmentIcon />,
+  },
+];
 
   return (
     <Box
