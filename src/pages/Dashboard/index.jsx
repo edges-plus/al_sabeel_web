@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
-import Container from "@components/DashboardLayout/container";
+import Container from "@components/DashboardLayout/Container";
 
 import StatCards from "./StatCards";
 import ManagementSections from "./ManagementSections";

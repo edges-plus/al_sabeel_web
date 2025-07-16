@@ -11,7 +11,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import Loader from "@components/loader/loader";
+import Loader from "@components/loader/Loader";
 import Sidebar from "@components/DashboardLayout/Sidebar";
 import Header from "@components/DashboardLayout/Header";
 import Footer from "@components/DashboardLayout/Footer";

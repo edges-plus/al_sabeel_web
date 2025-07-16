@@ -25,12 +25,12 @@ export const routes = [
     exact: true,
     private: false,
   },
-//   {
-//     path: "/resetPassword",
-//     component: lazy(() => import("@pages/ResetPassword")),
-//     exact: true,
-//     private: false,
-//   },
+  {
+    path: "/resetPassword",
+    component: lazy(() => import("@pages/ResetPassword")),
+    exact: true,
+    private: false,
+  },
   {
     path: "/dashboard",
     component: lazy(() => import("@pages/Dashboard")),
