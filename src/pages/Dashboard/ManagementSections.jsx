@@ -29,6 +29,16 @@ const managementOptions = [
     description: "Oversee site activities and staff performance",
     icon: <ApartmentIcon />,
   },
+  {
+    name: "Accounts",
+    description: "Manage financial transactions and accounts",
+    icon: <ApartmentIcon />,
+  },
+  {
+    name: "Reports",
+    description:"Generate detailed reports on operations and finances",
+    icon: <ApartmentIcon />,
+  },
 ];
 
 const ManagementSections = () => (
