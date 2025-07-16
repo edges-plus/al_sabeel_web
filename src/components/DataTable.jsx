@@ -120,9 +120,6 @@ function DataTable({
               <TableCell key={colIdx} align={col.align || "left"}>
                 <Box sx={{  pl: isFirst ? level * 2 : 0, display: "flex", alignItems: "center" }}>
 
-                  {isFirst && !item.is_group && (
-                    <span style={{ marginRight: 6 }}>📄</span>
-                  )}
                   <Box sx={{ fontWeight: item.is_group ? 600 : 400 }}>
                     {value}
                   </Box>
