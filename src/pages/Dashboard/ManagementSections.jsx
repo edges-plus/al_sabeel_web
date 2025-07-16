@@ -22,7 +22,7 @@ const ManagementSections = () => {
       name: "CRM",
       description: "Manage customer relationships and leads",
       icon: <ContactPhoneIcon />,
-      onClick: () => navigate("/crm"),
+      onClick: () => navigate("/CRM"),
     },
     {
       name: "Service Management",
