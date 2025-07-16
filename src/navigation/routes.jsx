@@ -145,4 +145,16 @@ export const routes = [
     exact: true,
     private: true,
   },
+  {
+    path: "/CRM/Customers",
+    component: lazy(() => import("@pages/CRM/Customers")),
+    exact: true,
+    private: true,
+  },
+  {
+    path: "/CRM/Customers/Add",
+    component: lazy(() => import("@pages/CRM/Customers/AddEdit")),
+    exact: true,
+    private: true,
+  },
 ];

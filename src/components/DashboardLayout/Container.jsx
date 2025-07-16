@@ -76,12 +76,6 @@ const HeaderContainer = ({
               color="primary"
               onClick={buttonFunction}
               startIcon={buttonIcon ? <AddIcon /> : null}
-              sx={{
-                bgcolor: "black",
-                "&:hover": {
-                  bgcolor: "rgba(0, 0, 0, 0.8)",
-                },
-              }}
             >
               {buttonText}
             </Button>

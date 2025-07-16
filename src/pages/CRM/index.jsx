@@ -19,13 +19,13 @@ const Index = () => {
     {
       title: "Customers",
       icon: <ContactPhoneIcon />,
-      onClick: () => navigate("/management/crm"),
+      onClick: () => navigate("/CRM/Customers"),
     },
   ];
 
   return (
     <Box sx={{ p: 4 }}>
-      <Typography variant="h4" gutterBottom mb={2}>
+      <Typography variant="h4" gutterBottom mb={5}>
         CRM
       </Typography>
 
