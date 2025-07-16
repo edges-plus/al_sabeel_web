@@ -5,6 +5,8 @@ import ledgerReducer from "@root/redux/reducers/ledgerReducer";
 import accountReducer from "@root/redux/reducers/accountReducer";
 import journalEntryReducer from "@root/redux/reducers/journalEntry.reducer";
 import invoiceReducer from "@root/redux/reducers/invoiceReducer";
+import customerReducer from "@root/redux/reducers/customerReducer";
+
 
 
 
@@ -20,6 +22,7 @@ export default combineReducers({
   account: accountReducer,
   journalEntry: journalEntryReducer,
   invoice: invoiceReducer,
+  customer: customerReducer, 
 
 
 
