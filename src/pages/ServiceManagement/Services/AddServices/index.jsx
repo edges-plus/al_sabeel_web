@@ -43,7 +43,7 @@ const AddService = () => {
     };
 
     console.log("Submitting service:", payload);
-    navigate("/management/services");
+    navigate("/ServiceManagement/services", );
   };
 
   return (
