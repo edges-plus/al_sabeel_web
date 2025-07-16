@@ -27,7 +27,7 @@ const CustomerListPage = () => {
   };
 
   const addCustomer = () => {
-    navigate("/Customer/Add");
+    navigate("/CRM/Customers/Add");
   };
 
   const updateParams = (newParams) => {

@@ -104,3 +104,41 @@ export const getCustomers = (params) => async (dispatch) => {
   }
 };
 
+export const createCustomer = (customerData) => async (dispatch) => {
+
+
+  dispatch(loaderOn());
+
+  try {
+
+
+    const response = await postApi("/sales/createCustomer", customerData);
+
+
+    if (response.status === 200) {
+      dispatch(loaderOff());
+      getCustomers();
+      return response.data;
+    }
+  } catch (error) {
+    dispatch(loaderOff());
+
+
+    errorHandler(error);
+  }
+};
+
+export const updateCustomer = (id, customerData) => async (dispatch) => {
+  dispatch(loaderOn());
+  try {
+    const response = await putApi(`/sales/updateCustomer/${id}`, customerData);
+
+    if (response.status === 200) {
+      dispatch(loaderOff());
+      return response.data;
+    }
+  } catch (error) {
+    dispatch(loaderOff());
+    errorHandler(error);
+  }
+};
