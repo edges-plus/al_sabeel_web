@@ -53,22 +53,24 @@ const EarningsChart = () => {
   };
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-        height: "100%",
-        minHeight: 250,
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <Typography variant="h6" fontWeight={600} mb={2}>
-        Earnings Report
-      </Typography>
-      <Box sx={{ flex: 1 }}>
-        <Line ref={chartRef} data={data} options={options} />
-      </Box>
-    </Box>
+<Box
+  sx={{
+    width: "100%",
+    minHeight: 300,
+    height: { xs: 250, sm: 300, md: 350 },
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+  }}
+>
+  <Typography variant="h6" fontWeight={600} mb={2}>
+    Earnings Report
+  </Typography>
+  <Box sx={{ flex: 1 }}>
+    <Line ref={chartRef} data={data} options={options} />
+  </Box>
+</Box>
+
   );
 };
 
