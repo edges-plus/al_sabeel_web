@@ -72,12 +72,12 @@ const Index = () => {
     <Box sx={{ p: 4 }}>
       <Grid container justifyContent="space-between" alignItems="center" mb={3}>
         <Typography variant="h5" fontWeight={600}>
-          Services
+          Service Group
         </Typography>
         <Button
           variant="contained"
           sx={{ textTransform: "none" }}
-          onClick={() => navigate("/ServiceManagement/services/Add")}
+          onClick={() => navigate("/ServiceManagement/serviceGroup/Add")}
         >
           + Add New Service
         </Button>
