@@ -30,7 +30,7 @@ const Index = () => {
       onClick: () => navigate("/ServiceManagement/tools-consumables"),
     },
     {
-      title: "Purchases",
+      title: "Material Purchases",
       icon: <ShoppingCartIcon />,
       onClick: () => navigate("/ServiceManagement/purchases"),
     },

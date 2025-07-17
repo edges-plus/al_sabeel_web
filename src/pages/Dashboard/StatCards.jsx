@@ -15,11 +15,24 @@ import PeopleIcon from "@mui/icons-material/People";
 import BuildCircleIcon from "@mui/icons-material/BuildCircle";
 
 const statCards = [
+  
   {
-    title: "Total Jobs",
-    value: 150,
-    icon: <CleaningServicesIcon />,
-    color: "#E3F2FD",
+    title: "Enquiries",
+    value: 12,
+    icon: <BuildCircleIcon />,
+    color: "#E8F5E9",
+  },
+   {
+    title: "Site Inspections Pending",
+    value: 12,
+    icon: <BuildCircleIcon />,
+    color: "#E8F5E9",
+  },
+ {
+    title: "Unscheduled Works",
+    value: 12,
+    icon: <BuildCircleIcon />,
+    color: "#E8F5E9",
   },
   {
     title: "Service in Progress",
@@ -39,6 +52,7 @@ const statCards = [
     icon: <PeopleIcon />,
     color: "#F3E5F5",
   },
+ 
 ];
 
 const StatCards = () => {
