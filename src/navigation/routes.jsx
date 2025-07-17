@@ -9,25 +9,25 @@ const ReportsDashboard = () => (
 export const routes = [
   {
     path: "/",
-    component: lazy(() => import("@pages/Login")),
+    component: lazy(() => import("@pages/auth/Login")),
     exact: true,
     private: false,
   },
   {
     path: "/login",
-    component: lazy(() => import("@pages/Login")),
+    component: lazy(() => import("@pages/auth/Login")),
     exact: true,
     private: false,
   },
   {
     path: "/forgotPassword",
-    component: lazy(() => import("@pages/ForgotPassword")),
+    component: lazy(() => import("@pages/auth/ForgotPassword")),
     exact: true,
     private: false,
   },
   {
     path: "/resetPassword",
-    component: lazy(() => import("@pages/ResetPassword")),
+    component: lazy(() => import("@pages/auth/ResetPassword")),
     exact: true,
     private: false,
   },
@@ -170,18 +170,7 @@ export const routes = [
     private: true,
   },
 
-  {
-    path: "/ServiceManagement/services",
-    component: lazy(() => import("@pages/ServiceManagement/Services")),
-    exact: true,
-    private: true,
-  },
-  {
-    path: "/ServiceManagement/services/Add",
-    component: lazy(() => import("@pages/ServiceManagement/Services/AddServices")),
-    exact: true,
-    private: true,
-  },
+  
      {
     path: "/ServiceManagement/serviceGroup",
     component: lazy(() => import("@pages/ServiceManagement/ServiceGroup")),

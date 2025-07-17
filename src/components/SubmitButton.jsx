@@ -1,16 +1,18 @@
 import React from 'react';
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 
 const SubmitButton = ({ 
   text, 
   marginBottom = 0,
-  marginTop = 0 
+  marginTop = 0,
+  loading = false 
 }) => {
   return (
     <Button
       type="submit"
       fullWidth
       variant="contained"
+      disabled={loading}
       sx={{
         py: {
           xs: 1.25,
@@ -35,11 +37,20 @@ const SubmitButton = ({
           bgcolor: 'brand.dark',
           boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
         },
+        '&:disabled': {
+          bgcolor: 'grey.400',
+          color: 'white',
+          boxShadow: 'none',
+        },
         mb: marginBottom,
         mt: marginTop
       }}
     >
-      {text}
+      {loading ? (
+        <CircularProgress size={24} sx={{ color: 'white' }} />
+      ) : (
+        text
+      )}
     </Button>
   );
 };
