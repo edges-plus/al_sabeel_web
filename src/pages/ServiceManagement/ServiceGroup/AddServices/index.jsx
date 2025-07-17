@@ -16,6 +16,11 @@ const mockCategories = [
   { id: 2, name: "Plumbing" },
   { id: 3, name: "Electrical" },
 ];
+const mockUnitMeasure = [
+  { id: 1, name: "Litre" },
+  { id: 2, name: "Kg" },
+  // { id: 3, name: "Electrical" },
+];
 
 const AddService = () => {
   const navigate = useNavigate();
@@ -23,7 +28,7 @@ const AddService = () => {
   const [formData, setFormData] = useState({
     name: "",
     category: null,
-    unitType: "",
+    unitMeasure: null,
     basePrice: "",
     description: "",
   });
@@ -32,8 +37,8 @@ const AddService = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.name.trim() || !formData.category) {
-      return alert("Please fill in the name and category");
+    if (!formData.name.trim() || !formData.unitMeasure) {
+      return alert("Please fill in the required fields");
     }
 
     const payload = {
@@ -55,27 +60,7 @@ const AddService = () => {
 
         <form onSubmit={handleSubmit}>
           <FormContainer>
-            <FormTextField
-              name="name"
-              label="Name"
-              value={formData.name}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, name: e.target.value }))
-              }
-              size={{ md: 6, xs: 12 }}
-            />
-
-            <FormTextField
-              name="unitType"
-              label="Unit Type"
-              value={formData.unitType}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, unitType: e.target.value }))
-              }
-              size={{ md: 6, xs: 12 }}
-            />
-
-            {/* Wider category field */}
+               {/* Wider category field */}
             <FormAutoComplete
               name="category"
               label="Category"
@@ -86,8 +71,31 @@ const AddService = () => {
                 setFormData((prev) => ({ ...prev, category: newValue }))
               }
               onInputChange={() => {}}
-              size={{ md: 8, xs: 12 }}
+              size={{ md: 6, xs: 12 }}
             />
+            <FormTextField
+              name="name"
+              label="Name"
+              value={formData.name}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, name: e.target.value }))
+              }
+              size={{ md: 6, xs: 12 }}
+            />
+     <FormAutoComplete
+              name="unitMeasure"
+              label="Unit Measure"
+              options={mockUnitMeasure}
+              value={formData.unitMeasure}
+              getOptionLabel={(option) => option.name}
+              onChange={(e, newValue) =>
+                setFormData((prev) => ({ ...prev, unitMeasure: newValue }))
+              }
+              onInputChange={() => {}}
+              size={{ md: 6, xs: 12 }}
+            />
+
+         
 
             {/* Smaller base price to balance row */}
             <FormTextField
@@ -98,7 +106,7 @@ const AddService = () => {
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, basePrice: e.target.value }))
               }
-              size={{ md: 4, xs: 12 }}
+              size={{ md: 6, xs: 12 }}
             />
 
             <FormTextField
