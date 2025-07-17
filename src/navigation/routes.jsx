@@ -184,8 +184,14 @@ export const routes = [
     exact: true,
     private: true,
   },
+       {
+    path: "/AddWork",
+    component: lazy(() => import("@pages/AddWork")),
+    exact: true,
+    private: true,
+  },
 
  
- 
+
 
 ];
