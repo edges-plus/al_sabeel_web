@@ -7,6 +7,8 @@ import FormContainer from "@components/FormContainer";
 import FormTextField from "@components/FormTextField";
 import FormDatePicker from "@components/FormDatePicker";
 import FormAutoComplete from "@components/FormAutoComplete";
+import { useDispatch } from "react-redux";
+import { createWorkEntry } from "@root/redux/actions/AddWorkActions";
 
 // Mock Data
 const mockCustomers = [
@@ -22,6 +24,7 @@ const mockWorkItems = [
 
 const AddWorkForm = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     customer: null,
@@ -30,7 +33,7 @@ const AddWorkForm = () => {
     notes: "",
   });
 
-  const [workLines, setWorkLines] = useState([{ work: null, description: "" }]);
+  const [Works, setWorks] = useState([{ work: null }]);
 
   const [errors, setErrors] = useState({});
 
@@ -40,21 +43,21 @@ const AddWorkForm = () => {
   };
 
   const handleWorkLineChange = (index, field, value) => {
-    const updatedLines = [...workLines];
+    const updatedLines = [...Works];
     updatedLines[index][field] = value;
-    setWorkLines(updatedLines);
+    setWorks(updatedLines);
   };
 
   const addWorkLine = () => {
-    setWorkLines([...workLines, { work: null, description: "" }]);
+    setWorks([...Works, { work: null, description: "" }]);
   };
 
   const removeWorkLine = (index) => {
-    const updatedLines = workLines.filter((_, i) => i !== index);
-    setWorkLines(updatedLines);
+    const updatedLines = Works.filter((_, i) => i !== index);
+    setWorks(updatedLines);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newErrors = {};
@@ -68,11 +71,13 @@ const AddWorkForm = () => {
 
     const payload = {
       ...formData,
-      workLines,
+      Works,
     };
 
-    console.log("Submitted:", payload);
-    // submit logic
+    const result = await dispatch(createWorkEntry(payload));
+    if (result) {
+      navigate("/works");
+    }
   };
 
   return (
@@ -124,7 +129,7 @@ const AddWorkForm = () => {
             size={{ md: 6, xs: 12 }}
           />
 
-          {workLines.map((line, index) => (
+          {Works.map((line, index) => (
             <Grid
               size={{ xs: 12, md: 6 }}
               key={index}
@@ -162,7 +167,7 @@ const AddWorkForm = () => {
                 <IconButton
                   color="error"
                   onClick={() => removeWorkLine(index)}
-                  disabled={workLines.length === 1}
+                  disabled={Works.length === 1}
                 >
                   <Delete />
                 </IconButton>
