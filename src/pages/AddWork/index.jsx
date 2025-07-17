@@ -31,9 +31,7 @@ const AddWorkForm = () => {
     notes: "",
   });
 
-  const [workLines, setWorkLines] = useState([
-    { work: null, description: "" },
-  ]);
+  const [workLines, setWorkLines] = useState([{ work: null, description: "" }]);
 
   const [errors, setErrors] = useState({});
 
@@ -62,7 +60,8 @@ const AddWorkForm = () => {
 
     const newErrors = {};
     if (!formData.customer) newErrors.customer = "Customer is required";
-    if (!formData.requestDate) newErrors.requestDate = "Request date is required";
+    if (!formData.requestDate)
+      newErrors.requestDate = "Request date is required";
     if (!formData.source) newErrors.source = "Source is required";
 
     setErrors(newErrors);
@@ -126,57 +125,61 @@ const AddWorkForm = () => {
             size={{ md: 6, xs: 12 }}
           />
 
-{workLines.map((line, index) => (
-<Grid size={{ md: 6, xs: 1 }}
-  key={index}
-  container
-  spacing={2}
-  alignItems="center"
-  sx={{
-    bgcolor: '#f4f6f8',
-    border: '1px solid #e0e0e0',
-    borderRadius: 2,
-    p: 2,
-    mb: 2,
-  }}
->
+          {workLines.map((line, index) => (
+            <Grid
+              size={{ xs: 12, md: 6 }}
+              key={index}
+              container
+              spacing={2}
+              alignItems="center"
+              sx={{
+                bgcolor: "#f4f6f8",
+                border: "1px solid #e0e0e0",
+                borderRadius: 2,
+                p: 2,
+                mb: 2,
+              }}
+            >
+              {/* Work AutoComplete Field */}
+              <Grid size={10}>
+                <FormAutoComplete
+                  name={`work-${index}`}
+                  label="Work"
+                  options={mockWorkItems}
+                  value={line.work}
+                  onChange={(e, value) =>
+                    handleWorkLineChange(index, "work", value)
+                  }
+                  getOptionLabel={(option) => option?.name || ""}
+                  isOptionEqualToValue={(option, value) =>
+                    option?.id === value?.id
+                  }
+                  fullWidth
+                />
+              </Grid>
 
-    {/* Work AutoComplete Field */}
-<Grid size={{ md: 10, xs: 12 }}>
-<FormAutoComplete
-  name={`work-${index}`}
-  label="Work"
-  options={mockWorkItems}
-  value={line.work}
-  onChange={(e, value) => handleWorkLineChange(index, "work", value)}
-  getOptionLabel={(option) => option?.name || ""}
-  isOptionEqualToValue={(option, value) => option?.id === value?.id}
-fullWidth
-/>
+              {/* Delete Button */}
+              <Grid size={2}>
+                <IconButton
+                  color="error"
+                  onClick={() => removeWorkLine(index)}
+                  disabled={workLines.length === 1}
+                >
+                  <Delete />
+                </IconButton>
+              </Grid>
+            </Grid>
+          ))}
 
-</Grid>
-
-
-
-    {/* Delete Button */}
-    <Grid item xs={12} md={1} sx={{ display: 'flex', justifyContent: 'center' }}>
-      <IconButton
-        color="error"
-        onClick={() => removeWorkLine(index)}
-        disabled={workLines.length === 1}
-      >
-        <Delete />
-      </IconButton>
-    </Grid>
- 
-  </Grid>
-))}
-
-
-
-
-
-          <Grid size={{ xs: 12 }} sx={{ mb: 3, mx: 'auto', display: 'flex', justifyContent: 'center' }}>
+          <Grid
+            size={{ xs: 12 }}
+            sx={{
+              mb: 3,
+              mx: "auto",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
             <Button
               startIcon={<Add />}
               onClick={addWorkLine}
@@ -187,19 +190,38 @@ fullWidth
             </Button>
           </Grid>
 
+          <FormAutoComplete
+            size={{ xs: 12, md: 6 }}
+            name="nextWork"
+            label="Next Work"
+            options={["Site inception", "Enquiry", "Work Order"]}
+            value={formData.nextWork}
+            onChange={(e, value) =>
+              handleChange("nextWork")({ target: { value } })
+            }
+            errorText={errors.nextWork}
+            getOptionLabel={(option) => option?.name || option}
+            isOptionEqualToValue={(option, value) =>
+              (option?.id ?? option) === (value?.id ?? value)
+            }
+          />
+
           {/* Submit Buttons */}
-      <Grid size={12} sx={{ mt: 3, display: "flex", justifyContent: "space-around" }}>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => navigate(-1)}
-              >
-                 Cancel
-              </Button>
-              <Button type="submit" variant="contained" color="primary">
-                   Save 
-              </Button>
-            </Grid>
+          <Grid
+            size={12}
+            sx={{ mt: 3, display: "flex", justifyContent: "space-around" }}
+          >
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => navigate(-1)}
+            >
+              Cancel
+            </Button>
+            <Button type="submit" variant="contained" color="primary">
+              Save
+            </Button>
+          </Grid>
         </FormContainer>
       </form>
     </HeaderContainer>
