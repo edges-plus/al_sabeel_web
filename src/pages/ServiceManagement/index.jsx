@@ -24,9 +24,9 @@ const Index = () => {
       onClick: () => navigate("/ServiceManagement/ServiceCategories"),
     },
         {
-      title: "Services",
+      title: "Service Group",
       icon: <BuildIcon />,
-      onClick: () => navigate("/ServiceManagement/services"),
+      onClick: () => navigate("/ServiceManagement/serviceGroup"),
     },
   ];
  

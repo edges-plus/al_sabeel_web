@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Box,
   Typography,
@@ -11,64 +11,120 @@ import {
 } from "@mui/material";
 
 import FormTextField from "@components/FormTextField";
-import DataTable from "@components/DataTable"; 
+import DataTable from "@components/DataTable";
+import Container from "@components/DashboardLayout/container";
+
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getServiceCategories,
+  createServiceCategory,
+  updateServiceCategory,
+  updateServiceCategoryParams
+} from "@root/redux/actions/serviceCategoriesActions";
+
 
 const Index = () => {
-  const [open, setOpen] = useState(false);
-  const [categoryName, setCategoryName] = useState("");
-  const [categories, setCategories] = useState([
-    { id: 1, name: "Cleaning" },
-    { id: 2, name: "Plumbing" },
-  ]);
+  const dispatch = useDispatch();
+  const { data, count, params } = useSelector((state) => state.serviceCategory);
 
-  const [params, setParams] = useState({
-    page: 1,
-    rowsPerPage: 10,
-    count: 2,
-  });
+  const [open, setOpen] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+  const [categoryName, setCategoryName] = useState("");
+
+  // 🔁 Fetch categories when params change
+  useEffect(() => {
+    dispatch(getServiceCategories(params));
+  }, [params.page, params.rowsPerPage, params.search]);
+
+  const paginatedData = useMemo(() => data || [], [data]);
+
+  const handleOpenDialog = (category = null) => {
+    if (category) {
+      setEditingId(category.id);
+      setCategoryName(category.name);
+    } else {
+      setEditingId(null);
+      setCategoryName("");
+    }
+    setOpen(true);
+  };
+
+  const handleSaveCategory = () => {
+    const name = categoryName.trim();
+    if (!name) return alert("Please enter a category name");
+
+    if (editingId) {
+      dispatch(updateServiceCategory(editingId, { name })).then(() =>
+        dispatch(getServiceCategories(params))
+      );
+    } else {
+      dispatch(createServiceCategory({ name })).then(() =>
+        dispatch(getServiceCategories(params))
+      );
+    }
+
+    setOpen(false);
+    setCategoryName("");
+    setEditingId(null);
+  };
+
+  const handleSearchChange = (e) => {
+    dispatch(
+      updateServiceCategoryParams({ search: e.target.value, page: 1 })
+    );
+  };
+
+  const clearSearch = () => {
+    dispatch(updateServiceCategoryParams({ search: "", page: 1 }));
+  };
 
   const columns = [
     { label: "Category Name", key: "name" },
+    {
+      label: "Actions",
+      key: "actions",
+      render: (row) => (
+        <Button
+          size="small"
+          variant="outlined"
+          onClick={() => handleOpenDialog(row)}
+          sx={{ textTransform: "none", borderRadius: 1 }}
+        >
+          Edit
+        </Button>
+      ),
+    },
   ];
 
-  const handleAddCategory = () => {
-    if (!categoryName.trim()) {
-      return alert("Please enter category name");
-    }
-
-    const newCategory = {
-      id: categories.length + 1,
-      name: categoryName,
-    };
-
-    setCategories([newCategory, ...categories]);
-    setCategoryName("");
-    setOpen(false);
-  };
-
   return (
-    <Box sx={{ p: 4 }}>
-      <Grid container justifyContent="space-between" alignItems="center" mb={3}>
-        <Typography variant="h5" fontWeight={600}>
-          Service Categories
-        </Typography>
-        <Button variant="contained" onClick={() => setOpen(true)} sx={{ textTransform: "none" }}>
-          + Add New
-        </Button>
-      </Grid>
-
+    <Container
+      header="Service Categories"
+      buttonFunction={() => handleOpenDialog(null)}
+      buttonText="New"
+      addButton={true}
+      divider={true}
+      yScrol={{}}
+      showSearch={true}
+      searchValue={params.search}
+      onSearchChange={handleSearchChange}
+      onClearSearch={clearSearch}
+      searchPlaceholder="Search by category name"
+    >
       <DataTable
         columns={columns}
-        data={categories.slice(
-          (params.page - 1) * params.rowsPerPage,
-          params.page * params.rowsPerPage
-        )}
-        params={{ ...params, count: categories.length }}
-        updateParams={setParams}
+        data={paginatedData}
+        emptyMessage="No categories found."
+        titleField="name"
+        params={params}
+        updateParams={(newParams) =>
+          dispatch(updateServiceCategoryParams(newParams))
+        }
+        onRowClick={() => {}}
+        count={count}
       />
 
       <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm">
-        <DialogTitle>Add Category</DialogTitle>
+        <DialogTitle>{editingId ? "Edit Category" : "Add Category"}</DialogTitle>
         <DialogContent sx={{ pt: 1 }}>
           <FormTextField
             name="category"
@@ -81,12 +137,12 @@ const Index = () => {
           <Button onClick={() => setOpen(false)} variant="outlined">
             Cancel
           </Button>
-          <Button onClick={handleAddCategory} variant="contained">
+          <Button onClick={handleSaveCategory} variant="contained">
             Save
           </Button>
         </DialogActions>
       </Dialog>
-    </Box>
+    </Container>
   );
 };
 
