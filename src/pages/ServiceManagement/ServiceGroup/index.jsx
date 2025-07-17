@@ -1,35 +1,47 @@
 import React, { useEffect } from "react";
-import {
-  Box,
-  Typography,
-  Button,
-  Grid,
-  Switch,
-} from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { Button, Switch } from "@mui/material";
 
+import Container from "@components/DashboardLayout/container";
 import DataTable from "@components/DataTable";
+
 import {
   getServiceCategories,
   updateServiceCategory,
   updateServiceCategoryParams,
 } from "@root/redux/actions/serviceCategoriesActions";
 
-const Index = () => {
-  const navigate = useNavigate();
+const ServiceGroupPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const { services, params } = useSelector((state) => state.serviceCategory); 
+  const { services, params } = useSelector((state) => state.serviceCategory);
 
   useEffect(() => {
     dispatch(getServiceCategories(params));
-  }, [dispatch, params.page, params.rowsPerPage]);
+  }, [dispatch, params.page, params.rowsPerPage, params.search]);
+
+  const handleSearchChange = (e) => {
+    dispatch(updateServiceCategoryParams({ ...params, search: e.target.value, page: 1 }));
+  };
+
+  const clearSearch = () => {
+    dispatch(updateServiceCategoryParams({ ...params, search: "", page: 1 }));
+  };
+
+  const addServiceGroup = () => {
+    navigate("/ServiceManagement/serviceGroup/Add");
+  };
+
+  const updateParams = (newParams) => {
+    dispatch(updateServiceCategoryParams(newParams));
+  };
 
   const columns = [
     { label: "Name", key: "name" },
     { label: "Category", key: "category" },
-    { label: "Unit Type", key: "unitType" },
+    { label: "Unit Measure", key: "unitMeasure" },
     {
       label: "Base Price",
       key: "basePrice",
@@ -46,31 +58,49 @@ const Index = () => {
         />
       ),
     },
+    {
+      label: "Actions",
+      key: "actions",
+      render: (row) => (
+        <Button
+          variant="contained"
+          size="small"
+          color="secondary"
+          onClick={() => navigate(`/ServiceManagement/serviceGroup/Edit/${row.id}`)}
+          sx={{ textTransform: "none", borderRadius: 1 }}
+        >
+          Edit
+        </Button>
+      ),
+    },
   ];
 
   return (
-    <Box sx={{ p: 4 }}>
-      <Grid container justifyContent="space-between" alignItems="center" mb={3}>
-        <Typography variant="h5" fontWeight={600}>
-          Service Group
-        </Typography>
-        <Button
-          variant="contained"
-          sx={{ textTransform: "none" }}
-          onClick={() => navigate("/ServiceManagement/serviceGroup/Add")}
-        >
-          + Add New Service
-        </Button>
-      </Grid>
-
+    <Container
+      header="Service Groups"
+      buttonFunction={addServiceGroup}
+      buttonText="New"
+      addButton={true}
+      divider={true}
+      yScrol={{}}
+      showSearch={true}
+      searchValue={params.search}
+      onSearchChange={handleSearchChange}
+      onClearSearch={clearSearch}
+      searchPlaceholder="Search by name, category or unit"
+    >
       <DataTable
         columns={columns}
         data={services}
+        emptyMessage="No service groups found."
+        titleField="name"
         params={params}
-        updateParams={(newParams) => dispatch(updateServiceCategoryParams(newParams))}
+        updateParams={updateParams}
+        onRowClick={() => {}}
+        count={params.count}
       />
-    </Box>
+    </Container>
   );
 };
 
-export default Index;
+export default ServiceGroupPage;
