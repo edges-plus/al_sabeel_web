@@ -1,88 +1,55 @@
 import React from "react";
-import {
-  Box,
-  Typography,
-  Card,
-  Grid,
-  Button,
-  Avatar,
-  CardContent,
-  CardActions,
-} from "@mui/material";
-import CategoryIcon from "@mui/icons-material/Category"; // For Service Categories
-import BuildIcon from "@mui/icons-material/Build";       // For Services
+import { Box, Typography, Grid } from "@mui/material";
+import CategoryIcon from "@mui/icons-material/Category";
+import BuildIcon from "@mui/icons-material/Build";
+import HandymanIcon from "@mui/icons-material/Handyman"; // For Tools & Consumables
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart"; // For Purchases
 
 import { useNavigate } from "react-router-dom";
+import NavigationCard from "@components/NavigationCard.jsx";
 
 const Index = () => {
   const navigate = useNavigate();
 
-  const crmItems = [
+  const serviceItems = [
     {
       title: "Service Categories",
       icon: <CategoryIcon />,
       onClick: () => navigate("/ServiceManagement/ServiceCategories"),
     },
+
         {
       title: "Service Group",
+
       icon: <BuildIcon />,
       onClick: () => navigate("/ServiceManagement/serviceGroup"),
     },
+    {
+      title: "Tools & Consumables",
+      icon: <HandymanIcon />,
+      onClick: () => navigate("/ServiceManagement/tools-consumables"),
+    },
+    {
+      title: "Purchases",
+      icon: <ShoppingCartIcon />,
+      onClick: () => navigate("/ServiceManagement/purchases"),
+    },
   ];
- 
+
   return (
     <Box sx={{ p: 4 }}>
-      <Typography variant="h4" gutterBottom mb={2}>
+      <Typography variant="h4" gutterBottom mb={5}>
         Service Management
       </Typography>
 
       <Grid container spacing={3}>
-        {crmItems.map((item, index) => (
+        {serviceItems.map((item, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
-            <Card
-              elevation={4}
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                height: "100%",
-                minWidth: "300px",
-                borderRadius: 3,
-                transition: "transform 0.2s ease, box-shadow 0.3s ease",
-                ":hover": {
-                  transform: "translateY(-4px)",
-                  boxShadow: 6,
-                },
-              }}
-            >
-              <CardContent>
-                <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-                  <Avatar
-                    sx={{
-                      bgcolor: "primary.main",
-                      mr: 2,
-                      width: 48,
-                      height: 48,
-                    }}
-                  >
-                    {item.icon}
-                  </Avatar>
-                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                    {item.title}
-                  </Typography>
-                </Box>
-              </CardContent>
-              <CardActions sx={{ justifyContent: "flex-end", px: 2, pb: 2 }}>
-                <Button
-                  onClick={item.onClick}
-                  variant="contained"
-                  size="small"
-                  sx={{ textTransform: "none", borderRadius: 2 }}
-                >
-                  View
-                </Button>
-              </CardActions>
-            </Card>
+            <NavigationCard
+              title={item.title}
+              icon={item.icon}
+              onClick={item.onClick}
+            />
           </Grid>
         ))}
       </Grid>
