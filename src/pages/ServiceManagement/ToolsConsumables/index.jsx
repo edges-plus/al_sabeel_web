@@ -113,6 +113,7 @@ const handleSubmit = () => {
         formData={formData}
         setFormData={setFormData}
         errors={errors}
+        setErrors={setErrors}
         />
     </Container>
   );

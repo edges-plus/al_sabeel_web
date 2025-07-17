@@ -17,15 +17,18 @@ const ToolConsumableModal = ({
   formData,
   setFormData,
   errors,
+  setErrors,  
   isEdit = false,
 }) => {
   const types = ["Tool", "Consumable"];
 
-  const handleChange = (field) => (e) => {
-    const value = e.target.value;
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
-
+ const handleChange = (field) => (e) => {
+  const value = e.target.value;
+  setFormData((prev) => ({ ...prev, [field]: value }));
+  if (errors[field]) {
+    setErrors((prevErrors) => ({ ...prevErrors, [field]: "" }));
+  }
+};
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle>{isEdit ? "Edit" : "Add"} Tool / Consumable</DialogTitle>
