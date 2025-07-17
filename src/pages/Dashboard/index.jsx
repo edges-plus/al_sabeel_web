@@ -1,5 +1,11 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Fab,
+  Tooltip
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import Container from "@components/DashboardLayout/Container";
 
 import StatCards from "./StatCards";
@@ -7,6 +13,9 @@ import ManagementSections from "./ManagementSections";
 import EarningsChart from "./EarningsChart";
 import TopEmployees from "./TopEmployees";
 import RecentFeedback from "./RecentFeedback";
+import { useNavigate } from "react-router-dom";
+
+
 
 const Dashboard = () => {
   const user = JSON.parse(localStorage.getItem("user")) || {};
@@ -17,6 +26,9 @@ const Dashboard = () => {
     ? new Date(user.lastLogin).toLocaleString()
     : "N/A";
 
+const navigate = useNavigate();
+const handleAddWork = () => navigate("/AddWork");
+
   return (
     <Container
       divider={false}
@@ -25,6 +37,7 @@ const Dashboard = () => {
         maxWidth: "100% !important",
         px: { xs: 2, md: 4 },
         py: 3,
+        position: "relative",
       }}
     >
       {/* Header */}
@@ -85,6 +98,23 @@ const Dashboard = () => {
           <RecentFeedback />
         </Box>
       </Box>
+
+      {/* Floating Action Button */}
+      <Tooltip title="Add Work">
+        <Fab
+          color="primary"
+          aria-label="add"
+          onClick={handleAddWork}
+          sx={{
+            position: "fixed",
+            bottom: 24,
+            right: 24,
+            zIndex: 1000,
+          }}
+        >
+          <AddIcon />
+        </Fab>
+      </Tooltip>
     </Container>
   );
 };
