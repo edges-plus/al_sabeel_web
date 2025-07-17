@@ -12,7 +12,7 @@ import { isRequired, validate, combineValidators } from "@root/utils/validators"
 import ToolConsumableModal from "@pages/ServiceManagement/ToolsConsumables/ToolConsumableModal";
 
 
-const ToolConsumableListPage = () => {
+const Index = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { toolConsumables, params } = useSelector((state) => state.toolConsumable);
@@ -119,4 +119,4 @@ const handleSubmit = () => {
   );
 };
 
-export default ToolConsumableListPage;
+export default Index;

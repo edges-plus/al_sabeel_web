@@ -187,6 +187,12 @@ export const routes = [
     exact: true,
     private: true,
   },
+  {
+    path: "/ServiceManagement/purchases",
+    component: lazy(() => import("@pages/ServiceManagement/Purchases")),
+    exact: true,
+    private: true,
+  },
 
  
  

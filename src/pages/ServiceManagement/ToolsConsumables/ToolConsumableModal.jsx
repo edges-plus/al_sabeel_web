@@ -32,7 +32,7 @@ const ToolConsumableModal = ({
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle>{isEdit ? "Edit" : "Add"} Tool / Consumable</DialogTitle>
-      <DialogContent dividers>
+      <DialogContent dividers sx={{ p: 3 }}>
         <Grid container spacing={2} mt={0.5}>
           <FormTextField
             label="Name"
