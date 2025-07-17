@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -13,12 +13,17 @@ import FormTextField from "@components/FormTextField";
 import FormAutoComplete from "@components/FormAutoComplete";
 import FormContainer from "@components/FormContainer";
 import { isRequired, validate } from "@root/utils/validators";
+import {
+  getServiceGroups,
 
-const mockCategories = [
-  { id: 1, name: "Cleaning" },
-  { id: 2, name: "Plumbing" },
-  { id: 3, name: "Electrical" },
-];
+} from "@root/redux/actions/serviceGroupActions";
+
+import {
+ createService
+} from "@root/redux/actions/serviceActions"; 
+
+import { useDispatch } from "react-redux";
+
 
 const mockUnitMeasure = [
   { id: 1, name: "Litre" },
@@ -27,7 +32,7 @@ const mockUnitMeasure = [
 
 const AddService = () => {
   const navigate = useNavigate();
-
+const [serviceGroups,setServiceGroups]=useState([])
   const [formData, setFormData] = useState({
     name: "",
     category: null,
@@ -38,13 +43,26 @@ const AddService = () => {
 
   const [errors, setErrors] = useState({});
   const [openSnackbar, setOpenSnackbar] = useState(false);
-
+const dispatch =useDispatch()
   const validatorMap = {
     name: isRequired,
     category: isRequired,
     unitMeasure: isRequired,
     basePrice: isRequired,
   };
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await  dispatch(getServiceGroups());
+    
+      setServiceGroups(result);
+    };
+  
+    fetchData();
+  }, []);
+
+
 
   const handleChange = (field) => (e) => {
     const value = e.target.value;
@@ -61,14 +79,15 @@ const AddService = () => {
     if (Object.keys(newErrors).length > 0) return;
 
     const payload = {
-      ...formData,
-      category: formData.category.name,
-      unitMeasure: formData.unitMeasure.name,
+      description:formData.description,
+      name:formData.name,
+      groupId: formData.category.id,
+       unitType: formData.unitMeasure.name,
       basePrice: parseFloat(formData.basePrice),
     };
 
     console.log("Submitting service:", payload);
-    setOpenSnackbar(true);
+   dispatch(createService(payload))
     setTimeout(() => navigate("/ServiceManagement"), 1500);
   };
 
@@ -84,7 +103,7 @@ const AddService = () => {
             <FormAutoComplete
               name="category"
               label="Category"
-              options={mockCategories}
+              options={serviceGroups}
               value={formData.category}
               getOptionLabel={(option) => option.name}
               onChange={(e, newValue) =>

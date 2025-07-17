@@ -1,48 +1,56 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Button, Switch } from "@mui/material";
 
-import Container from "@components/DashboardLayout/container";
+import Container from "@components/DashboardLayout/Container";
 import DataTable from "@components/DataTable";
 
 
 import {
-  getServiceGroups,
-  updateServiceGroup,
-  updateServiceGroupParams,
-} from "@root/redux/actions/serviceGroupActions"; 
+  getServices,
+  updateService,
+} from "@root/redux/actions/serviceActions"; 
 
 const ServiceGroupPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [services,setServices]=useState([])
+ const [totalRows, setTotalRows] = useState(0);
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [searchText, setSearchText] = useState("");
+ const [count, seCount] = useState("");
 
-  const { data: services, params } = useSelector((state) => state.serviceGroup);
-
+ 
+ 
   useEffect(() => {
-    dispatch(getServiceGroups(params));
-  }, [dispatch, params.page, params.rowsPerPage, params.search]);
+    const fetchData = async () => {
+      const result = await  dispatch(getServices(
+        { page,
+          rowsPerPage,
+          order: "DESC",
+  }
+      ));
+     
+      
+      setServices(result);
+    };
+  
+    fetchData();
+  }, [page,searchText,totalRows]);
 
-  const handleSearchChange = (e) => {
-    dispatch(updateServiceGroupParams({ ...params, search: e.target.value, page: 1 }));
-  };
-
-  const clearSearch = () => {
-    dispatch(updateServiceGroupParams({ ...params, search: "", page: 1 }));
-  };
 
   const addServiceGroup = () => {
     navigate("/ServiceManagement/serviceGroup/Add");
   };
 
-  const updateParams = (newParams) => {
-    dispatch(updateServiceGroupParams(newParams));
-  };
+  
 
   const columns = [
     { label: "Name", key: "name" },
-    { label: "Category", key: "category" },
-    { label: "Unit Measure", key: "unitMeasure" },
+    { label: "Category", key: "groupName" },
+    { label: "Unit Measure", key: "unitType" },
     {
       label: "Base Price",
       key: "basePrice",
@@ -54,10 +62,12 @@ const ServiceGroupPage = () => {
       key: "active",
       render: (item) => (
         <Switch
-          checked={item.active}
-          onChange={() => dispatch(updateServiceGroup(item.id, !item.active))}
+          checked={item.isActive}
+          onChange={() => dispatch(updateService(item.id, { isActive: !item.isActive }))}
+
         />
       ),
+       
     },
     {
       label: "Actions",
@@ -85,9 +95,9 @@ const ServiceGroupPage = () => {
       divider={true}
       yScrol={{}}
       showSearch={true}
-      searchValue={params.search}
-      onSearchChange={handleSearchChange}
-      onClearSearch={clearSearch}
+     // searchValue={params.search}
+     // onSearchChange={handleSearchChange}
+      //onClearSearch={clearSearch}
       searchPlaceholder="Search by name, category or unit"
     >
       <DataTable
@@ -95,10 +105,10 @@ const ServiceGroupPage = () => {
         data={services}
         emptyMessage="No service groups found."
         titleField="name"
-        params={params}
-        updateParams={updateParams}
+       // params={params}
+        //updateParams={updateParams}
         onRowClick={() => {}}
-        count={params.count}
+        //count={params.count}
       />
     </Container>
   );
