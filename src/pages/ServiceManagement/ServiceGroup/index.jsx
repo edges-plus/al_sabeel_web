@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Typography,
@@ -7,38 +7,24 @@ import {
   Switch,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import DataTable from "@components/DataTable";
+import {
+  getServiceCategories,
+  updateServiceCategory,
+  updateServiceCategoryParams,
+} from "@root/redux/actions/serviceCategoriesActions";
 
 const Index = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [services, setServices] = useState([
-    {
-      id: 1,
-      name: "Bathroom Cleaning",
-      category: "Cleaning",
-      unitType: "Per Hour",
-      basePrice: 300,
-      description: "Deep clean bathroom service",
-      active: true,
-    },
-    {
-      id: 2,
-      name: "Pipe Fixing",
-      category: "Plumbing",
-      unitType: "Per Service",
-      basePrice: 500,
-      description: "Fix leaking pipes",
-      active: false,
-    },
-  ]);
+  const { services, params } = useSelector((state) => state.serviceCategory); 
 
-  const [params, setParams] = useState({
-    page: 1,
-    rowsPerPage: 10,
-    count: 2,
-  });
+  useEffect(() => {
+    dispatch(getServiceCategories(params));
+  }, [dispatch, params.page, params.rowsPerPage]);
 
   const columns = [
     { label: "Name", key: "name" },
@@ -56,13 +42,7 @@ const Index = () => {
       render: (item) => (
         <Switch
           checked={item.active}
-          onChange={() => {
-            setServices((prev) =>
-              prev.map((s) =>
-                s.id === item.id ? { ...s, active: !s.active } : s
-              )
-            );
-          }}
+          onChange={() => dispatch(updateServiceCategory(item.id, !item.active))}
         />
       ),
     },
@@ -85,12 +65,9 @@ const Index = () => {
 
       <DataTable
         columns={columns}
-        data={services.slice(
-          (params.page - 1) * params.rowsPerPage,
-          params.page * params.rowsPerPage
-        )}
-        params={{ ...params, count: services.length }}
-        updateParams={setParams}
+        data={services}
+        params={params}
+        updateParams={(newParams) => dispatch(updateServiceCategoryParams(newParams))}
       />
     </Box>
   );
