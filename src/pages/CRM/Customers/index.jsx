@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Container from "@components/DashboardLayout/container";
+import Container from "@components/DashboardLayout/Container";
 import DataTable from "@components/DataTable";
 import { Button } from "@mui/material";
 import {

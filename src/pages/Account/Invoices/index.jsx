@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import Container from "@components/DashboardLayout/container";
+import Container from "@components/DashboardLayout/Container";
 import DataTable from "@components/DataTable";
 import { getInvoices, updateInvoiceParams } from "@root/redux/actions/invoiceAction";
 

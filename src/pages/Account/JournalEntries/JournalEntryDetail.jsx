@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch,useSelector } from "react-redux";
 import { Typography, Button, Box } from "@mui/material";
-import Container from "@components/DashboardLayout/container";
+import Container from "@components/DashboardLayout/Container";
 import DataTable from "@components/DataTable";
 import {
   getJournalEntryById,
