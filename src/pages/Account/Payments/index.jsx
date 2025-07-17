@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Button } from "@mui/material";
-import HeaderContainer from "@components/DashboardLayout/container";
+import HeaderContainer from "@components/DashboardLayout/Container";
 import FormTextField from "@components/FormTextField";
 import FormAutoComplete from "@components/FormAutoComplete";
 import FormContainer from "@components/FormContainer";
@@ -141,11 +141,10 @@ const Index = () => {
       payload.reminder = {
         type: "DuePayment",
         related_type: "Ledger",
-        amount: paidAmount,
         related_id: formData.selectedTo.id,
         reminder_date: new Date(formData.dueDate).toISOString().split("T")[0],
         status: "pending",
-        note: formData.narration || "",
+          note: `${paidAmount ? `Amount of ₹${paidAmount} is noted.` : `No payment recorded yet.`}${formData.narration ? ` Note: ${formData.narration}` : ""}`,
       };
     }
     dispatch(createJournalEntry(payload)).then((res) => {

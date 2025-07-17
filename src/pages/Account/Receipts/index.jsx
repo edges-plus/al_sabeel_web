@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Button } from "@mui/material";
-import HeaderContainer from "@components/DashboardLayout/container";
+import HeaderContainer from "@components/DashboardLayout/Container";
 import FormContainer from "@components/FormContainer";
 import FormTextField from "@components/FormTextField";
 import FormAutoComplete from "@components/FormAutoComplete";
@@ -138,11 +138,10 @@ const Index = () => {
       payload.reminder = {
         type: "DueReceipt",
         related_type: "Ledger",
-        amount: receivedAmount,
         related_id: formData.selectedDestination.id,
         reminder_date: new Date(formData.dueDate).toISOString().split("T")[0],
         status: "pending",
-        note: formData.narration || "",
+      note: `${receivedAmount ? `Expected receipt of ₹${receivedAmount}.` : `No amount specified for receipt.`}${formData.narration ? ` Note: ${formData.narration}` : ""}`,
       };
     }
 

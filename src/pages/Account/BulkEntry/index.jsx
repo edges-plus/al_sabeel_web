@@ -2,7 +2,7 @@ import { createJournalEntry } from "@root/redux/actions/journalEntry.actions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import HeaderContainer from "@components/DashboardLayout/container";
+import HeaderContainer from "@components/DashboardLayout/Container";
 import FormContainer from "@components/FormContainer";
 import FormDatePicker from "@components/FormDatePicker";
 import FormTextField from "@components/FormTextField";
