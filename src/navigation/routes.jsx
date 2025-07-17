@@ -163,23 +163,26 @@ export const routes = [
     exact: true,
     private: true,
   },
-  {
-    path: "/ServiceManagement/ServiceCategories",
-    component: lazy(() => import("@pages/ServiceManagement/ServiceCategories")),
+
+
+     {
+    path: "/ServiceManagement/service-groups",
+    component: lazy(() => import("@pages/ServiceManagement/ServiceGroups")),
+
     exact: true,
     private: true,
   },
 
   
      {
-    path: "/ServiceManagement/serviceGroup",
-    component: lazy(() => import("@pages/ServiceManagement/ServiceGroup")),
+    path: "/ServiceManagement/services",
+    component: lazy(() => import("@pages/ServiceManagement/Services")),
     exact: true,
     private: true,
   },
       {
     path: "/ServiceManagement/serviceGroup/Add",
-    component: lazy(() => import("@pages/ServiceManagement/ServiceGroup/AddServices")),
+    component: lazy(() => import("@pages/ServiceManagement/Services/AddServices")),
     exact: true,
     private: true,
   },

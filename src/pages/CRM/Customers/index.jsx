@@ -14,8 +14,12 @@ const CustomerListPage = () => {
   const navigate = useNavigate();
   const { customers, params } = useSelector((state) => state.customer);
 
+
   useEffect(() => {
-    dispatch(getCustomers(params));
+    dispatch(getCustomers({ page:params.page,
+          rowsPerPage:params.rowsPerPage,
+          order: "DESC",
+          search:  params.search,}))
   }, [dispatch, params.page, params.rowsPerPage, params.search]);
 
   const handleSearchChange = (e) => {

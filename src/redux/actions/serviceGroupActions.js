@@ -1,11 +1,5 @@
 import { getApi, postApi } from "@helpers/api";
 import { errorHandler } from "@helpers/errorHandlers";
-import {
-  SERVICE_GROUPS_LOADED,
-  SERVICE_GROUP_CREATED,
-  SERVICE_GROUP_UPDATED,
-  UPDATE_SERVICE_GROUP_PARAMS,
-} from "@root/redux/types";
 import { loaderOn, loaderOff } from "./loaderAction";
 
 export const getServiceGroups =
@@ -14,16 +8,13 @@ export const getServiceGroups =
     dispatch(loaderOn());
     try {
       delete params.count;
-      const response = await getApi("/service-group", "", params);
-      if (response.status === 200) {
-        dispatch({
-          type: SERVICE_GROUPS_LOADED,
-          payload: {
-            data: response.data.rows,
-            count: response.data.count,
-          },
-        });
+      const response = await getApi("/service-management/service-groups", "", params);
+   
+   dispatch(loaderOff());
+          if (response.status === 200) {
+       return response.data.data
       }
+   
     } catch (err) {
       errorHandler(err);
     }
@@ -33,12 +24,10 @@ export const getServiceGroups =
 export const createServiceGroup = (data) => async (dispatch) => {
   dispatch(loaderOn());
   try {
-    const response = await postApi("/service-group/create", data);
+    const response = await postApi("/service-management/create-service-group", data);
     if (response.status === 200) {
-      dispatch({
-        type: SERVICE_GROUP_CREATED,
-        payload: response.data,
-      });
+      getServiceCategories()
+      return
     }
   } catch (err) {
     errorHandler(err);
@@ -49,10 +38,14 @@ export const createServiceGroup = (data) => async (dispatch) => {
 export const updateServiceGroup = (id, data) => async (dispatch) => {
   dispatch(loaderOn());
   try {
-    const response = await postApi(`/service-group/update/${id}`, data, "PUT");
+    const response = await postApi(
+      `/service-category/update/${id}`,
+      data,
+      "PUT"
+    );
     if (response.status === 200) {
       dispatch({
-        type: SERVICE_GROUP_UPDATED,
+        type: SERVICE_CATEGORY_UPDATED,
         payload: response.data,
       });
     }
@@ -62,9 +55,3 @@ export const updateServiceGroup = (id, data) => async (dispatch) => {
   dispatch(loaderOff());
 };
 
-export const updateServiceGroupParams = (params) => (dispatch) => {
-  dispatch({
-    type: UPDATE_SERVICE_GROUP_PARAMS,
-    payload: params,
-  });
-};
