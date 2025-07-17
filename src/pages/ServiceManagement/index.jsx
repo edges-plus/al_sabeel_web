@@ -19,14 +19,14 @@ const Index = () => {
 
   const crmItems = [
     {
-      title: "Service Categories",
+      title: "Service Groups",
       icon: <CategoryIcon />,
-      onClick: () => navigate("/ServiceManagement/ServiceCategories"),
+      onClick: () => navigate("/ServiceManagement/service-groups"),
     },
         {
-      title: "Service Group",
+      title: "Services",
       icon: <BuildIcon />,
-      onClick: () => navigate("/ServiceManagement/serviceGroup"),
+      onClick: () => navigate("/ServiceManagement/services"),
     },
   ];
  

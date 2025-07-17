@@ -23,11 +23,11 @@ const AddCustomer = () => {
     contactPerson: "",
     email: "",
     countryCode: "+971",
-    mobileNumber: "",
     address: "",
     landmark: "",
     permissions: "",
     remarks: "",
+    phone:""
   };
 
   const [formData, setFormData] = useState(initialState);
@@ -38,7 +38,7 @@ const AddCustomer = () => {
     companyName: isRequired,
     contactPerson: isRequired,
     email: combineValidators(isRequired, isValidEmail),
-    mobileNumber: combineValidators(isRequired, isValidPhone),
+   phone: combineValidators(isRequired, isValidPhone),
     address: isRequired,
   };
 
@@ -64,7 +64,7 @@ const AddCustomer = () => {
       } else {
         await dispatch(createCustomer(formData));
       }
-      navigate("/customer");
+      navigate("/CRM/Customers");
     } catch (err) {
       console.error("Error submitting form", err);
     }
@@ -132,10 +132,10 @@ const CustomerFormFields = ({ formData, errors, handleChange }) => {
       <Grid size={{ md: 6, xs: 12 }}>
         <FormTextField
             name="Mobile Number"
-            value={formData.mobileNumber}
-            onChange={handleChange("mobileNumber")}
+            value={formData.phone}
+            onChange={handleChange("phone")}
             placeholder="Enter mobile number"
-            errorText={errors.mobileNumber || ""}
+            errorText={errors.phone || ""}
             shrink={true}
             prefix={
             <Select

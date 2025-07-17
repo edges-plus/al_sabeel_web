@@ -12,31 +12,35 @@ import {
 
 import FormTextField from "@components/FormTextField";
 import DataTable from "@components/DataTable";
-import Container from "@components/DashboardLayout/container";
+import Container from "@components/DashboardLayout/Container";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getServiceCategories,
-  createServiceCategory,
-  updateServiceCategory,
-  updateServiceCategoryParams
-} from "@root/redux/actions/serviceCategoriesActions";
+  getServiceGroups,
+  createServiceGroup,
+  updateServiceGroup,
+
+} from "@root/redux/actions/serviceGroupActions";
 
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { data, count, params } = useSelector((state) => state.serviceCategory);
 
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  const [categoryName, setCategoryName] = useState("");
-
+  const [groupName, setGroupName] = useState("");
+const [serviceGroups,setServiceGroups]=useState([])
   // 🔁 Fetch categories when params change
-  useEffect(() => {
-    dispatch(getServiceCategories(params));
-  }, [params.page, params.rowsPerPage, params.search]);
+useEffect(() => {
+  const fetchData = async () => {
+    const result = await dispatch(getServiceGroups());
+    console.log("result",result);
+    
+    setServiceGroups(result);
+  };
 
-  const paginatedData = useMemo(() => data || [], [data]);
+  fetchData();
+}, []);
 
   const handleOpenDialog = (category = null) => {
     if (category) {
@@ -44,27 +48,27 @@ const Index = () => {
       setCategoryName(category.name);
     } else {
       setEditingId(null);
-      setCategoryName("");
+      setGroupName("");
     }
     setOpen(true);
   };
 
   const handleSaveCategory = () => {
-    const name = categoryName.trim();
+    const name = groupName.trim();
     if (!name) return alert("Please enter a category name");
 
     if (editingId) {
-      dispatch(updateServiceCategory(editingId, { name })).then(() =>
-        dispatch(getServiceCategories(params))
+      dispatch(updateServiceGroup(editingId, { name })).then(() =>
+        dispatch(getServiceGroups(params))
       );
     } else {
-      dispatch(createServiceCategory({ name })).then(() =>
-        dispatch(getServiceCategories(params))
+      dispatch(createServiceGroup({ name })).then(() =>
+        dispatch(getServiceGroups())
       );
     }
 
     setOpen(false);
-    setCategoryName("");
+    setGroupName("");
     setEditingId(null);
   };
 
@@ -105,32 +109,32 @@ const Index = () => {
       divider={true}
       yScrol={{}}
       showSearch={true}
-      searchValue={params.search}
+     // searchValue={params.search}
       onSearchChange={handleSearchChange}
       onClearSearch={clearSearch}
       searchPlaceholder="Search by category name"
     >
       <DataTable
         columns={columns}
-        data={paginatedData}
+        data={serviceGroups}
         emptyMessage="No categories found."
         titleField="name"
-        params={params}
+       // params={params}
         updateParams={(newParams) =>
           dispatch(updateServiceCategoryParams(newParams))
         }
         onRowClick={() => {}}
-        count={count}
+       // count={count}
       />
 
       <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm">
-        <DialogTitle>{editingId ? "Edit Category" : "Add Category"}</DialogTitle>
+        <DialogTitle>{editingId ? "Edit Group" : "Add Group"}</DialogTitle>
         <DialogContent sx={{ pt: 1 }}>
           <FormTextField
-            name="category"
-            label="Category Name"
-            value={categoryName}
-            onChange={(e) => setCategoryName(e.target.value)}
+            name="group"
+            label="Group Name"
+            value={groupName}
+            onChange={(e) => setGroupName(e.target.value)}
           />
         </DialogContent>
         <DialogActions>

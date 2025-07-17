@@ -18,7 +18,6 @@ const CustomerListPage = () => {
   useEffect(() => {
     dispatch(getCustomers({ page:params.page,
           rowsPerPage:params.rowsPerPage,
-          sort: "date",
           order: "DESC",
           search:  params.search,}))
   }, [dispatch, params.page, params.rowsPerPage, params.search]);

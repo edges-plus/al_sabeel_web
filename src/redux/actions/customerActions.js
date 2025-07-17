@@ -15,7 +15,7 @@ export const updateCustomerParams = (params) => (dispatch) => {
 export const getCustomers = (params) => async (dispatch) => {
   dispatch(loaderOn());
   try {
-       console.log("customerrr paramss",params);
+
     
     const response = await getApi("/crm/customers", "", params);
   
