@@ -1,21 +1,28 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Grid, Button } from "@mui/material";
+import { Grid, Button, IconButton } from "@mui/material";
+import { Add, Delete } from "@mui/icons-material";
 import HeaderContainer from "@components/DashboardLayout/container";
 import FormContainer from "@components/FormContainer";
 import FormTextField from "@components/FormTextField";
 import FormDatePicker from "@components/FormDatePicker";
 import FormAutoComplete from "@components/FormAutoComplete";
 
-// Mock data for customer
+// Mock Data
 const mockCustomers = [
   { id: 1, name: "John Doe" },
   { id: 2, name: "Jane Smith" },
 ];
 
+const mockWorkItems = [
+  { id: 1, name: "Painting" },
+  { id: 2, name: "Plumbing" },
+  { id: 3, name: "Cleaning" },
+];
+
 const AddWorkForm = () => {
   const navigate = useNavigate();
-  const [errors, setErrors] = useState({});
+
   const [formData, setFormData] = useState({
     customer: null,
     requestDate: null,
@@ -23,9 +30,30 @@ const AddWorkForm = () => {
     notes: "",
   });
 
+  const [workLines, setWorkLines] = useState([
+    { work: null, description: "" },
+  ]);
+
+  const [errors, setErrors] = useState({});
+
   const handleChange = (field) => (e) => {
     const value = e?.target?.value ?? e;
     setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleWorkLineChange = (index, field, value) => {
+    const updatedLines = [...workLines];
+    updatedLines[index][field] = value;
+    setWorkLines(updatedLines);
+  };
+
+  const addWorkLine = () => {
+    setWorkLines([...workLines, { work: null, description: "" }]);
+  };
+
+  const removeWorkLine = (index) => {
+    const updatedLines = workLines.filter((_, i) => i !== index);
+    setWorkLines(updatedLines);
   };
 
   const handleSubmit = (e) => {
@@ -39,14 +67,20 @@ const AddWorkForm = () => {
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
 
-    console.log("Form submitted:", formData);
-    // submit logic here
+    const payload = {
+      ...formData,
+      workLines,
+    };
+
+    console.log("Submitted:", payload);
+    // submit logic
   };
 
   return (
     <HeaderContainer header="Add Work" addButton={false} divider>
       <form onSubmit={handleSubmit}>
         <FormContainer>
+          {/* Basic Fields */}
           <FormAutoComplete
             name="customer"
             label="Customer"
@@ -86,24 +120,84 @@ const AddWorkForm = () => {
             name="notes"
             value={formData.notes}
             onChange={handleChange("notes")}
-            errorText={errors.notes}
             multiline
             rows={3}
             size={{ md: 6, xs: 12 }}
           />
 
-          <Grid
-            item
-            xs={12}
-            sx={{ mt: 3, display: "flex", justifyContent: "space-around" }}
-          >
-            <Button variant="contained" color="secondary" onClick={() => navigate(-1)}>
-              Cancel
-            </Button>
-            <Button type="submit" variant="contained" color="primary">
-              Save
+{workLines.map((line, index) => (
+<Grid size={{ md: 6, xs: 1 }}
+  key={index}
+  container
+  spacing={2}
+  alignItems="center"
+  sx={{
+    bgcolor: '#f4f6f8',
+    border: '1px solid #e0e0e0',
+    borderRadius: 2,
+    p: 2,
+    mb: 2,
+  }}
+>
+
+    {/* Work AutoComplete Field */}
+<Grid size={{ md: 10, xs: 12 }}>
+<FormAutoComplete
+  name={`work-${index}`}
+  label="Work"
+  options={mockWorkItems}
+  value={line.work}
+  onChange={(e, value) => handleWorkLineChange(index, "work", value)}
+  getOptionLabel={(option) => option?.name || ""}
+  isOptionEqualToValue={(option, value) => option?.id === value?.id}
+fullWidth
+/>
+
+</Grid>
+
+
+
+    {/* Delete Button */}
+    <Grid item xs={12} md={1} sx={{ display: 'flex', justifyContent: 'center' }}>
+      <IconButton
+        color="error"
+        onClick={() => removeWorkLine(index)}
+        disabled={workLines.length === 1}
+      >
+        <Delete />
+      </IconButton>
+    </Grid>
+  </Grid>
+))}
+
+
+
+
+
+          <Grid size={{ xs: 12 }} sx={{ mb: 3, mx: 'auto', display: 'flex', justifyContent: 'center' }}>
+            <Button
+              startIcon={<Add />}
+              onClick={addWorkLine}
+              variant="outlined"
+              color="primary"
+            >
+              Add Line
             </Button>
           </Grid>
+
+          {/* Submit Buttons */}
+      <Grid size={12} sx={{ mt: 3, display: "flex", justifyContent: "space-around" }}>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => navigate(-1)}
+              >
+                 Cancel
+              </Button>
+              <Button type="submit" variant="contained" color="primary">
+                   Save 
+              </Button>
+            </Grid>
         </FormContainer>
       </form>
     </HeaderContainer>
