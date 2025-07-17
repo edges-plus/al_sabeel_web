@@ -6,28 +6,29 @@ import { Button, Switch } from "@mui/material";
 import Container from "@components/DashboardLayout/container";
 import DataTable from "@components/DataTable";
 
+
 import {
-  getServiceCategories,
-  updateServiceCategory,
-  updateServiceCategoryParams,
-} from "@root/redux/actions/serviceCategoriesActions";
+  getServiceGroups,
+  updateServiceGroup,
+  updateServiceGroupParams,
+} from "@root/redux/actions/serviceGroupActions"; 
 
 const ServiceGroupPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { services, params } = useSelector((state) => state.serviceCategory);
+  const { data: services, params } = useSelector((state) => state.serviceGroup);
 
   useEffect(() => {
-    dispatch(getServiceCategories(params));
+    dispatch(getServiceGroups(params));
   }, [dispatch, params.page, params.rowsPerPage, params.search]);
 
   const handleSearchChange = (e) => {
-    dispatch(updateServiceCategoryParams({ ...params, search: e.target.value, page: 1 }));
+    dispatch(updateServiceGroupParams({ ...params, search: e.target.value, page: 1 }));
   };
 
   const clearSearch = () => {
-    dispatch(updateServiceCategoryParams({ ...params, search: "", page: 1 }));
+    dispatch(updateServiceGroupParams({ ...params, search: "", page: 1 }));
   };
 
   const addServiceGroup = () => {
@@ -35,7 +36,7 @@ const ServiceGroupPage = () => {
   };
 
   const updateParams = (newParams) => {
-    dispatch(updateServiceCategoryParams(newParams));
+    dispatch(updateServiceGroupParams(newParams));
   };
 
   const columns = [
@@ -54,7 +55,7 @@ const ServiceGroupPage = () => {
       render: (item) => (
         <Switch
           checked={item.active}
-          onChange={() => dispatch(updateServiceCategory(item.id, !item.active))}
+          onChange={() => dispatch(updateServiceGroup(item.id, !item.active))}
         />
       ),
     },

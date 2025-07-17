@@ -7,6 +7,7 @@ import journalEntryReducer from "@root/redux/reducers/journalEntry.reducer";
 import invoiceReducer from "@root/redux/reducers/invoiceReducer";
 import customerReducer from "@root/redux/reducers/customerReducer";
 import serviceCategoryReducer from "@root/redux/reducers/serviceCategoriesReducer";
+import serviceGroupReducer from "@root/redux/reducers/serviceGroupReducer";
 
 export default combineReducers({
   auth: authReducer,
@@ -17,4 +18,5 @@ export default combineReducers({
   invoice: invoiceReducer,
   customer: customerReducer,
   serviceCategory: serviceCategoryReducer,
+  serviceGroup: serviceGroupReducer,
 });
