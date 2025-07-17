@@ -9,25 +9,25 @@ const ReportsDashboard = () => (
 export const routes = [
   {
     path: "/",
-    component: lazy(() => import("@pages/Login")),
+    component: lazy(() => import("@pages/auth/Login")),
     exact: true,
     private: false,
   },
   {
     path: "/login",
-    component: lazy(() => import("@pages/Login")),
+    component: lazy(() => import("@pages/auth/Login")),
     exact: true,
     private: false,
   },
   {
     path: "/forgotPassword",
-    component: lazy(() => import("@pages/ForgotPassword")),
+    component: lazy(() => import("@pages/auth/ForgotPassword")),
     exact: true,
     private: false,
   },
   {
     path: "/resetPassword",
-    component: lazy(() => import("@pages/ResetPassword")),
+    component: lazy(() => import("@pages/auth/ResetPassword")),
     exact: true,
     private: false,
   },
@@ -145,7 +145,6 @@ export const routes = [
     exact: true,
     private: true,
   },
-
   {
     path: "/CRM/Customers",
     component: lazy(() => import("@pages/CRM/Customers")),
@@ -158,20 +157,23 @@ export const routes = [
     exact: true,
     private: true,
   },
-
-   {
+  {
     path: "/ServiceManagement",
     component: lazy(() => import("@pages/ServiceManagement")),
     exact: true,
     private: true,
   },
 
+
      {
     path: "/ServiceManagement/service-groups",
     component: lazy(() => import("@pages/ServiceManagement/ServiceGroups")),
+
     exact: true,
     private: true,
   },
+
+  
      {
     path: "/ServiceManagement/services",
     component: lazy(() => import("@pages/ServiceManagement/Services")),
@@ -187,6 +189,19 @@ export const routes = [
        {
     path: "/AddWork",
     component: lazy(() => import("@pages/AddWork")),
+    exact: true,
+    private: true,
+  },
+
+  {
+    path: "/ServiceManagement/tools-consumables",
+    component: lazy(() => import("@pages/ServiceManagement/ToolsConsumables")),
+    exact: true,
+    private: true,
+  },
+  {
+    path: "/ServiceManagement/purchases",
+    component: lazy(() => import("@pages/ServiceManagement/Purchases")),
     exact: true,
     private: true,
   },

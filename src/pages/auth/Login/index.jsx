@@ -9,11 +9,13 @@ import { login } from "@actions/authActions";
 import AuthLayout from "@components/AuthLayout.jsx";
 import FormField from "@components/FormField.jsx";
 import SubmitButton from "@components/SubmitButton.jsx";
+import Loader from "@components/loader/Loader.jsx";
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isLoggedIn } = useSelector((state) => state.auth);
+  const { loaderStatus } = useSelector((state) => state.loaderReducer);
   
   const [loginData, setLoginData] = useState({
     email: "",
@@ -47,7 +49,32 @@ const Login = () => {
       logoRequired={true} 
       useCenteredTitle={false}
     >
-      <Box component="form" onSubmit={handleSubmit} noValidate>
+      <Box 
+        component="form" 
+        onSubmit={handleSubmit} 
+        noValidate
+        sx={{ position: 'relative' }}
+      >
+        {loaderStatus && (
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "rgba(255,255,255,0.8)",
+              zIndex: 10,
+              borderRadius: 2,
+            }}
+          >
+            <Loader />
+          </Box>
+        )}
+        
         <FormField
           label="Email Address"
           type="email"
@@ -55,6 +82,7 @@ const Login = () => {
           value={loginData.email}
           onChange={handleInputChange}
           required={true}
+          disabled={loaderStatus}
         />
         
         <FormField
@@ -64,6 +92,7 @@ const Login = () => {
           value={loginData.password}
           onChange={handleInputChange}
           required={true}
+          disabled={loaderStatus}
           marginBottom={1}
         />
         
@@ -83,13 +112,18 @@ const Login = () => {
                 sm: '14px'
               },
               fontWeight: 400,
+              pointerEvents: loaderStatus ? 'none' : 'auto',
+              opacity: loaderStatus ? 0.6 : 1,
             }}
           >
             Forgot password?
           </Link>
         </Box>
         
-        <SubmitButton text="Sign In" />
+        <SubmitButton 
+          text="Sign In" 
+          loading={loaderStatus}
+        />
       </Box>
     </AuthLayout>
   );
