@@ -170,18 +170,7 @@ export const routes = [
     private: true,
   },
 
-  {
-    path: "/ServiceManagement/services",
-    component: lazy(() => import("@pages/ServiceManagement/Services")),
-    exact: true,
-    private: true,
-  },
-  {
-    path: "/ServiceManagement/services/Add",
-    component: lazy(() => import("@pages/ServiceManagement/Services/AddServices")),
-    exact: true,
-    private: true,
-  },
+  
      {
     path: "/ServiceManagement/serviceGroup",
     component: lazy(() => import("@pages/ServiceManagement/ServiceGroup")),
