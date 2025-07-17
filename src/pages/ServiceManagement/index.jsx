@@ -17,10 +17,12 @@ const Index = () => {
       icon: <CategoryIcon />,
       onClick: () => navigate("/ServiceManagement/ServiceCategories"),
     },
-    {
-      title: "Services",
+
+        {
+      title: "Service Group",
+
       icon: <BuildIcon />,
-      onClick: () => navigate("/ServiceManagement/services"),
+      onClick: () => navigate("/ServiceManagement/serviceGroup"),
     },
     {
       title: "Tools & Consumables",

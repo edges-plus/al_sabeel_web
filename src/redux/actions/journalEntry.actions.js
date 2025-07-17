@@ -10,6 +10,8 @@ export const createJournalEntry = (entryData) => async (dispatch) => {
     dispatch(loaderOn());
     try {
         const response = await postApi("/accounts/journal-entries", entryData);
+    
+       
         if (response.status === 201) {
             dispatch(loaderOff());
 

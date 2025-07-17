@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import dayjs from "dayjs";
 import { Button, Grid ,Select,MenuItem} from "@mui/material";
-import HeaderContainer from "@components/DashboardLayout/container";
+import HeaderContainer from "@components/DashboardLayout/Container";
 import FormContainer from "@components/FormContainer";
 import FormTextField from "@components/FormTextField";
 import FormAutoComplete from "@components/FormAutoComplete";

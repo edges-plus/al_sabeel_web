@@ -19,7 +19,7 @@ import {
   CurrencyExchange,
   Star,
 } from '@mui/icons-material';
-import HeaderContainer from "@components/DashboardLayout/container";
+import HeaderContainer from "@components/DashboardLayout/Container";
 
 function CurrencyManagement() {
   const [primaryCurrency] = useState('AED');

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Button, Checkbox, FormControlLabel } from "@mui/material";
-import HeaderContainer from "@components/DashboardLayout/container";
+import HeaderContainer from "@components/DashboardLayout/Container";
 import FormContainer from "@components/FormContainer";
 import FormTextField from "@components/FormTextField";
 import FormAutoComplete from "@components/FormAutoComplete";
@@ -138,9 +138,12 @@ const Index = () => {
         invoice_number: formData.billNumber || '', // or generate dynamically
         invoice_date: new Date(formData.billDate),
         due_date: formData.dueDate ? new Date(formData.dueDate) : null,
-        amount: totalAmount,
         status: formData.isPaid ? 'paid' : 'unpaid',
         narration: formData.narration,
+        totalAmount:totalAmount,
+        vatAmount:vatAmount,
+        billAmount:billAmount,
+     billNumber:formData.billNumber
       }
     };
 

@@ -169,6 +169,7 @@ export const routes = [
     exact: true,
     private: true,
   },
+
   {
     path: "/ServiceManagement/services",
     component: lazy(() => import("@pages/ServiceManagement/Services")),
@@ -181,6 +182,25 @@ export const routes = [
     exact: true,
     private: true,
   },
+     {
+    path: "/ServiceManagement/serviceGroup",
+    component: lazy(() => import("@pages/ServiceManagement/ServiceGroup")),
+    exact: true,
+    private: true,
+  },
+      {
+    path: "/ServiceManagement/serviceGroup/Add",
+    component: lazy(() => import("@pages/ServiceManagement/ServiceGroup/AddServices")),
+    exact: true,
+    private: true,
+  },
+       {
+    path: "/AddWork",
+    component: lazy(() => import("@pages/AddWork")),
+    exact: true,
+    private: true,
+  },
+
   {
     path: "/ServiceManagement/tools-consumables",
     component: lazy(() => import("@pages/ServiceManagement/ToolsConsumables")),
@@ -195,6 +215,6 @@ export const routes = [
   },
 
  
- 
+
 
 ];

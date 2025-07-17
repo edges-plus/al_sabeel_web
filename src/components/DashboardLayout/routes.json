@@ -16,6 +16,7 @@
           "icon": "RadarChartOutlined",
           "permissions": ["accounts.expenseVoucher"]
         },
+        
          {
           "key": "Closing-entries",
           "path": "/ClosingEntries",
