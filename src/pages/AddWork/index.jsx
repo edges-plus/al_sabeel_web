@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Grid, Button, IconButton } from "@mui/material";
 import { Add, Delete } from "@mui/icons-material";
@@ -7,8 +7,9 @@ import FormContainer from "@components/FormContainer";
 import FormTextField from "@components/FormTextField";
 import FormDatePicker from "@components/FormDatePicker";
 import FormAutoComplete from "@components/FormAutoComplete";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createWorkEntry } from "@root/redux/actions/AddWorkActions";
+import { getCustomers } from "@root/redux/actions/customerActions";
 
 // Mock Data
 const mockCustomers = [
@@ -17,9 +18,8 @@ const mockCustomers = [
 ];
 
 const mockWorkItems = [
-  { id: 1, name: "Painting" },
-  { id: 2, name: "Plumbing" },
-  { id: 3, name: "Cleaning" },
+  { id: 1, name: "Painting", unit: "sqft", price: 12 },
+  { id: 2, name: "Plumbing", unit: "hour", price: 25 },
 ];
 
 const AddWorkForm = () => {
@@ -31,9 +31,18 @@ const AddWorkForm = () => {
     requestDate: new Date(),
     source: "",
     notes: "",
+    nextProcess: "",
   });
 
-  const [Works, setWorks] = useState([{ work: null }]);
+  const [Service, setService] = useState([
+    {
+      service: null,
+      unitOfMeasure: "",
+      unitPrice: "",
+      qty: "",
+      totalValue: "",
+    },
+  ]);
 
   const [errors, setErrors] = useState({});
 
@@ -43,18 +52,27 @@ const AddWorkForm = () => {
   };
 
   const handleWorkLineChange = (index, field, value) => {
-    const updatedLines = [...Works];
+    const updatedLines = [...Service];
     updatedLines[index][field] = value;
-    setWorks(updatedLines);
+    setService(updatedLines);
   };
 
   const addWorkLine = () => {
-    setWorks([...Works, { work: null, description: "" }]);
+    setService([
+      ...Service,
+      {
+        service: null,
+        unitOfMeasure: "",
+        unitPrice: "",
+        qty: "",
+        totalValue: "",
+      },
+    ]);
   };
 
   const removeWorkLine = (index) => {
-    const updatedLines = Works.filter((_, i) => i !== index);
-    setWorks(updatedLines);
+    const updatedLines = Service.filter((_, i) => i !== index);
+    setService(updatedLines);
   };
 
   const handleSubmit = async (e) => {
@@ -71,22 +89,26 @@ const AddWorkForm = () => {
 
     const payload = {
       ...formData,
-      Works,
+      Service: Service.map((w) => ({
+        serviceId: w.service?.id,
+        unitOfMeasure: w.unitOfMeasure,
+        unitPrice: parseFloat(w.unitPrice),
+        qty: w.qty,
+        totalValue: parseFloat(w.totalValue),
+      })),
     };
 
     const result = await dispatch(createWorkEntry(payload));
     if (result) {
-      navigate("/works");
+      navigate("/Service");
     }
   };
 
   return (
     <HeaderContainer header="Add Work" addButton={false} divider>
       <form onSubmit={handleSubmit}>
-        
         <FormContainer>
-          {/* Basic Fields */}
-           <FormDatePicker
+          <FormDatePicker
             label="Date"
             name="requestDate"
             value={formData.requestDate}
@@ -110,8 +132,6 @@ const AddWorkForm = () => {
             size={{ md: 6, xs: 12 }}
           />
 
-         
-
           <FormTextField
             label="Source"
             name="source"
@@ -131,9 +151,9 @@ const AddWorkForm = () => {
             size={{ md: 6, xs: 12 }}
           />
 
-          {Works.map((line, index) => (
+          {Service.map((line, index) => (
             <Grid
-              size={{ xs: 12, md: 6 }}
+              size={{ xs: 12, md: 12 }}
               key={index}
               container
               spacing={2}
@@ -146,16 +166,25 @@ const AddWorkForm = () => {
                 mb: 2,
               }}
             >
-              {/* Work AutoComplete Field */}
-              <Grid size={10}>
+              <Grid size={{ xs: 6, md: 2 }}>
                 <FormAutoComplete
-                  name={`work-${index}`}
-                  label="Work"
+                  name={`service-${index}`}
+                  label="Service"
                   options={mockWorkItems}
-                  value={line.work}
-                  onChange={(e, value) =>
-                    handleWorkLineChange(index, "work", value)
-                  }
+                  value={line.service}
+                  onChange={(e, value) => {
+                    handleWorkLineChange(index, "service", value);
+                    handleWorkLineChange(
+                      index,
+                      "unitOfMeasure",
+                      value?.unit || ""
+                    ); // if service has unit
+                    handleWorkLineChange(
+                      index,
+                      "unitPrice",
+                      value?.price || ""
+                    );
+                  }}
                   getOptionLabel={(option) => option?.name || ""}
                   isOptionEqualToValue={(option, value) =>
                     option?.id === value?.id
@@ -164,12 +193,60 @@ const AddWorkForm = () => {
                 />
               </Grid>
 
-              {/* Delete Button */}
-              <Grid size={2}>
+              <Grid size={{ xs: 6, md: 2 }}>
+                <FormAutoComplete
+                  label="Unit of Measure"
+                  options={[line.unitOfMeasure].filter(Boolean)}
+                  value={line.unitOfMeasure}
+                  getOptionLabel={(option) => option}
+                  freeSolo={false}
+                  disableClearable
+                  disabled
+                  fullWidth
+                />
+              </Grid>
+
+              <Grid size={{ xs: 6, md: 2 }}>
+                <FormAutoComplete
+                  label="Unit Price"
+                  options={[line.unitPrice].filter(Boolean)}
+                  value={line.unitPrice}
+                  onChange={(e, value) =>
+                    handleWorkLineChange(index, "unitPrice", value)
+                  }
+                  getOptionLabel={(option) => option.toString()}
+                  freeSolo
+                  fullWidth
+                />
+              </Grid>
+
+              <Grid size={{ xs: 6, md: 2 }}>
+                <FormTextField
+                  label="Qty"
+                  value={line.qty}
+                  onChange={(e) =>
+                    handleWorkLineChange(index, "qty", e.target.value)
+                  }
+                  fullWidth
+                />
+              </Grid>
+
+              <Grid size={{ xs: 6, md: 2 }}>
+                <FormTextField
+                  label="Total Value"
+                  value={line.totalValue}
+                  onChange={(e) =>
+                    handleWorkLineChange(index, "totalValue", e.target.value)
+                  }
+                  fullWidth
+                />
+              </Grid>
+
+              <Grid size={{ xs: 6, md: 2 }}>
                 <IconButton
                   color="error"
                   onClick={() => removeWorkLine(index)}
-                  disabled={Works.length === 1}
+                  disabled={Service.length === 1}
                 >
                   <Delete />
                 </IconButton>
@@ -198,21 +275,18 @@ const AddWorkForm = () => {
 
           <FormAutoComplete
             size={{ xs: 12, md: 6 }}
-            name="nextWork"
-            label="Next Work"
+            name="nextProcess"
+            label="Next Process"
             options={["Site inception", "Enquiry", "Work Order"]}
-            value={formData.nextWork}
+            value={formData.nextProcess || ""}
             onChange={(e, value) =>
-              handleChange("nextWork")({ target: { value } })
+              handleChange("nextProcess")({ target: { value: value || "" } })
             }
-            errorText={errors.nextWork}
-            getOptionLabel={(option) => option?.name || option}
-            isOptionEqualToValue={(option, value) =>
-              (option?.id ?? option) === (value?.id ?? value)
-            }
+            errorText={errors.nextProcess}
+            getOptionLabel={(option) => option}
+            isOptionEqualToValue={(option, value) => option === value}
           />
 
-          {/* Submit Buttons */}
           <Grid
             size={12}
             sx={{ mt: 3, display: "flex", justifyContent: "space-around" }}
