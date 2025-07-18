@@ -163,18 +163,13 @@ export const routes = [
     exact: true,
     private: true,
   },
-
-
-     {
+  {
     path: "/ServiceManagement/service-groups",
     component: lazy(() => import("@pages/ServiceManagement/ServiceGroups")),
-
     exact: true,
     private: true,
   },
-
-  
-     {
+  {
     path: "/ServiceManagement/services",
     component: lazy(() => import("@pages/ServiceManagement/Services")),
     exact: true,
@@ -205,7 +200,24 @@ export const routes = [
     exact: true,
     private: true,
   },
-
+  {
+    path: "/ServiceManagement/crews",
+    component: lazy(() => import("@pages/ServiceManagement/Crews")),
+    exact: true,
+    private: true,
+  },
+  {
+    path: "/ServiceManagement/crews/add",
+    component: lazy(() => import("@pages/ServiceManagement/Crews/AddEdit")),
+    exact: true,
+    private: true,
+  },
+  {
+    path: "/Settings/users/add",
+    component: lazy(() => import("@pages/User/AddEdit")),
+    exact: true,
+    private: true,
+  },
  
 
 
