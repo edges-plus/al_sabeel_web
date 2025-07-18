@@ -8,8 +8,7 @@ import invoiceReducer from "@root/redux/reducers/invoiceReducer";
 import customerReducer from "@root/redux/reducers/customerReducer";
 
 import toolConsumableReducer from "@root/redux/reducers/toolConsumable.reducer";
-import serviceCategoryReducer from "@root/redux/reducers/serviceCategoriesReducer";
-import serviceGroupReducer from "@root/redux/reducers/serviceGroupReducer";
+
 
 
 export default combineReducers({
@@ -20,11 +19,9 @@ export default combineReducers({
   journalEntry: journalEntryReducer,
   invoice: invoiceReducer,
 
-  customer: customerReducer, 
-  toolConsumable: toolConsumableReducer, 
-
   customer: customerReducer,
-  serviceCategory: serviceCategoryReducer,
-  serviceGroup: serviceGroupReducer,
+  toolConsumable: toolConsumableReducer,
+
+
 
 });

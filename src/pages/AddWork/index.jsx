@@ -28,7 +28,7 @@ const AddWorkForm = () => {
 
   const [formData, setFormData] = useState({
     customer: null,
-    requestDate: null,
+    requestDate: new Date(),
     source: "",
     notes: "",
   });
@@ -83,8 +83,19 @@ const AddWorkForm = () => {
   return (
     <HeaderContainer header="Add Work" addButton={false} divider>
       <form onSubmit={handleSubmit}>
+        
         <FormContainer>
           {/* Basic Fields */}
+           <FormDatePicker
+            label="Date"
+            name="requestDate"
+            value={formData.requestDate}
+            onChange={(name, value) =>
+              handleChange("requestDate")({ target: { value } })
+            }
+            errorText={errors.requestDate}
+            size={{ md: 6, xs: 12 }}
+          />
           <FormAutoComplete
             name="customer"
             label="Customer"
@@ -99,16 +110,7 @@ const AddWorkForm = () => {
             size={{ md: 6, xs: 12 }}
           />
 
-          <FormDatePicker
-            label="Request Date"
-            name="requestDate"
-            value={formData.requestDate}
-            onChange={(name, value) =>
-              handleChange("requestDate")({ target: { value } })
-            }
-            errorText={errors.requestDate}
-            size={{ md: 6, xs: 12 }}
-          />
+         
 
           <FormTextField
             label="Source"
