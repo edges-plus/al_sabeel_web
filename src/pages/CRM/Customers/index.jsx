@@ -73,7 +73,7 @@ const CustomerListPage = () => {
       searchValue={params.search}
       onSearchChange={handleSearchChange}
       onClearSearch={clearSearch}
-      searchPlaceholder="Search by name, contact or phone"
+      searchPlaceholder="Search"
     >
       <DataTable
         columns={columns}

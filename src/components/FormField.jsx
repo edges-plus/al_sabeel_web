@@ -9,6 +9,7 @@ const FormField = ({
   onChange, 
   placeholder,
   required = false,
+  disabled = false,
   marginBottom = { xs: 2, sm: 2.5, md: 3 }
 }) => {
   const theme = useTheme();
@@ -27,6 +28,7 @@ const FormField = ({
         value={value}
         onChange={onChange}
         required={required}
+        disabled={disabled}
         placeholder={isMobile ? label : placeholder}
         InputProps={{
           sx: {
