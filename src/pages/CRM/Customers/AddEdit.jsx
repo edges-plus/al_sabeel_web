@@ -9,7 +9,7 @@ import FormTextField from "@components/FormTextField";
 import FormAutoComplete from "@components/FormAutoComplete";
 import { countryCodes } from "@root/helpers/utils";
 import { isRequired, validate,  combineValidators,isValidEmail,isValidPhone } from "@root/utils/validators";
-import { createCustomer, updateCustomer } from "@root/redux/actions/customerActions";
+import { createCustomer, updateCustomer,getCustomer } from "@root/redux/actions/customerActions";
 
 
 const AddCustomer = () => {
@@ -24,7 +24,7 @@ const AddCustomer = () => {
     email: "",
     countryCode: "+971",
     address: "",
-    landmark: "",
+    landMark: "",
     permissions: "",
     remarks: "",
     phone:""
@@ -42,6 +42,16 @@ const AddCustomer = () => {
     address: isRequired,
   };
 
+
+     useEffect(() => {
+    const getCustomerById = async () => {
+      const result = await  dispatch(getCustomer(id));
+    setFormData(result?.data)
+     
+    };
+  
+  getCustomerById();
+  }, []);
   const handleChange = (field) => (e) => {
     const value = e.target.value;
     const updated = { ...formData, [field]: value };
@@ -64,6 +74,7 @@ const AddCustomer = () => {
       } else {
         await dispatch(createCustomer(formData));
       }
+
       navigate("/CRM/Customers");
     } catch (err) {
       console.error("Error submitting form", err);
@@ -168,10 +179,10 @@ const CustomerFormFields = ({ formData, errors, handleChange }) => {
       />
 
       <FormTextField
-        name="landmark"
+        name="landMark"
         label="Landmark"
-        value={formData.landmark}
-        onChange={handleChange("landmark")}
+        value={formData.landMark}
+        onChange={handleChange("landMark")}
         size={{ md: 6, xs: 12 }}
         multiline
         rows={2}

@@ -23,8 +23,7 @@ const Index = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchText, setSearchText] = useState("");
 
-  const debouncedSearch = useDebouncedSearch(fetchService, 500);
-
+  
 
   const fetchService = async () => {
     const result = await dispatch(getServices(
@@ -38,6 +37,7 @@ const Index = () => {
     setServices(result.data);
        setTotalRows(result.count || 0);
   };
+const debouncedSearch = useDebouncedSearch(fetchService, 500);
 
   useEffect(() => {
     debouncedSearch();
@@ -45,11 +45,18 @@ const Index = () => {
   }, [page,searchText, rowsPerPage, ]);
 
 
+
   const addService = () => {
-    navigate("/ServiceManagement/serviceGroup/Add");
+    navigate("/ServiceManagement/service/Add");
+
+  }
+   const handleSearchChange = (e) => {
+    setSearchText(e.target.value);
   };
 
-  
+    const clearSearch = () => {
+    setSearchText("");
+  };
 
   const columns = [
     { label: "Name", key: "name" },
@@ -67,7 +74,10 @@ const Index = () => {
       render: (item) => (
         <Switch
           checked={item.isActive}
-          onChange={() => dispatch(updateService(item.id, { isActive: !item.isActive }))}
+         onChange={() =>
+  dispatch(updateService(item.id, { isActive: !item.isActive }))
+    .then(() => fetchService())
+}
 
         />
       ),
@@ -81,7 +91,7 @@ const Index = () => {
           variant="contained"
           size="small"
           color="secondary"
-          onClick={() => navigate(`/ServiceManagement/serviceGroup/Edit/${row.id}`)}
+          onClick={() => navigate(`/ServiceManagement/service/Edit/${row.id}`)}
           sx={{ textTransform: "none", borderRadius: 1 }}
         >
           Edit
@@ -99,9 +109,9 @@ const Index = () => {
       divider={true}
       yScrol={{}}
       showSearch={true}
-     // searchValue={params.search}
-     // onSearchChange={handleSearchChange}
-      //onClearSearch={clearSearch}
+     searchValue={searchText}
+      onSearchChange={handleSearchChange}
+    onClearSearch={clearSearch}
       searchPlaceholder="Search by name, category or unit"
     >
       <DataTable
@@ -109,10 +119,17 @@ const Index = () => {
         data={services}
         emptyMessage="No service groups found."
         titleField="name"
-       // params={params}
-        //updateParams={updateParams}
+        params={{
+          count: totalRows,
+          rowsPerPage: rowsPerPage,
+          page: page,
+        }}
+         updateParams={({ page, rowsPerPage }) => {
+          setPage(page);
+          setRowsPerPage(rowsPerPage);
+        }}
         onRowClick={() => {}}
-        //count={params.count}
+      
       />
     </Container>
   );

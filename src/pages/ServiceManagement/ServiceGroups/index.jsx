@@ -72,9 +72,13 @@ const Index = () => {
     const name = groupName.trim();
     if (!name) return alert("Please enter a category name");
 
+
     if (editingId) {
-      dispatch(updateServiceGroup(editingId, { name })).then(() =>
-        dispatch(fetchServiceGroups())
+
+      dispatch(updateServiceGroup(editingId,{name})).then(() =>
+        dispatch(getServiceGroups())
+
+   
       );
     } else {
       dispatch(createServiceGroup({ name })).then(() =>
@@ -85,6 +89,16 @@ const Index = () => {
     setOpen(false);
     setGroupName("");
     setEditingId(null);
+     const fetchGroups=async()=>{
+       const result = await dispatch(getServiceGroups({
+          page,
+          rowsPerPage,
+          order: "DESC",
+          search: "",
+        }));
+      setServiceGroups(result.data || []);
+     }
+     fetchGroups()
   };
   const debouncedFetchServiceGroups = useDebouncedSearch(fetchServiceGroups, 500);
 

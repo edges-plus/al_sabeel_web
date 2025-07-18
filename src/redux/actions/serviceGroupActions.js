@@ -1,4 +1,4 @@
-import { getApi, postApi } from "@helpers/api";
+import { getApi, postApi ,putApi} from "@helpers/api";
 import { errorHandler } from "@helpers/errorHandlers";
 import { loaderOn, loaderOff } from "./loaderAction";
 
@@ -38,16 +38,14 @@ export const createServiceGroup = (data) => async (dispatch) => {
 export const updateServiceGroup = (id, data) => async (dispatch) => {
   dispatch(loaderOn());
   try {
-    const response = await postApi(
-      `/service-category/update/${id}`,
+    const response = await putApi(
+      `/service-management/service-group/${id}`,
       data,
       "PUT"
     );
-    if (response.status === 200) {
-      dispatch({
-        type: SERVICE_CATEGORY_UPDATED,
-        payload: response.data,
-      });
+    if (response.status === 200) { 
+    
+return
     }
   } catch (err) {
     errorHandler(err);

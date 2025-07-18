@@ -1,4 +1,4 @@
-import { getApi,postApi } from "@helpers/api";
+import { getApi,postApi ,putApi} from "@helpers/api";
 import { loaderOn, loaderOff } from "@actions/loaderAction";
 import { CUSTOMERS_LOADED, UPDATE_CUSTOMER_PARAMS } from "@root/redux/types";
 import { errorHandler } from "@helpers/errorHandlers";
@@ -58,7 +58,7 @@ export const createCustomer = (customerData) => async (dispatch) => {
 export const updateCustomer = (id, customerData) => async (dispatch) => {
   dispatch(loaderOn());
   try {
-    const response = await putApi(`/sales/updateCustomer/${id}`, customerData);
+    const response = await putApi(`/crm/update-customer/${id}`, customerData);
 
     if (response.status === 200) {
       dispatch(loaderOff());
@@ -68,4 +68,19 @@ export const updateCustomer = (id, customerData) => async (dispatch) => {
     dispatch(loaderOff());
     errorHandler(error);
   }
+};
+
+export const getCustomer = (id) => async (dispatch) => {
+    dispatch(loaderOn());
+    try {
+        const response = await getApi(`/crm/customer/${id}`);
+        if (response.status === 200) {
+            dispatch(loaderOff());
+ 
+            return response.data;
+        }
+    } catch (error) {
+        dispatch(loaderOff());
+        errorHandler(error);
+    }
 };
