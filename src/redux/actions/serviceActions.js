@@ -18,7 +18,7 @@ export const getServices = (params = {}) => async (dispatch) => {
     dispatch(loaderOff())
       if (response.status === 200) {
        
-       return response.data.data
+       return response.data
       }
     } catch (err) {
       errorHandler(err);
@@ -29,10 +29,10 @@ export const getServices = (params = {}) => async (dispatch) => {
 export const createService = (data) => async (dispatch) => {
   dispatch(loaderOn());
   try {
-    console.log("data issssssssss",data);
+  
     
     const response = await postApi("/service-management/create-service", data);
-    console.log("respone issssssss",response);
+   
     
     if (response.status === 200) {
  
@@ -51,9 +51,8 @@ export const updateService= (id, data) => async (dispatch) => {
     const response = await putApi(`/service-management/service/${id}`, data);
 
     if (response.status === 200) {
-     getServices()
-      
-
+    dispatch(loaderOff());
+       return
     }
   } catch (err) {
     errorHandler(err);

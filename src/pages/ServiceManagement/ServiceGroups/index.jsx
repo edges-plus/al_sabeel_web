@@ -89,6 +89,16 @@ const Index = () => {
     setOpen(false);
     setGroupName("");
     setEditingId(null);
+     const fetchGroups=async()=>{
+       const result = await dispatch(getServiceGroups({
+          page,
+          rowsPerPage,
+          order: "DESC",
+          search: "",
+        }));
+      setServiceGroups(result.data || []);
+     }
+     fetchGroups()
   };
   const debouncedFetchServiceGroups = useDebouncedSearch(fetchServiceGroups, 500);
 

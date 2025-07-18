@@ -54,32 +54,35 @@ const dispatch =useDispatch()
   useEffect(() => {
     const fetchData = async () => {
       const result = await  dispatch(getServiceGroups());
-    
-      setServiceGroups(result);
+   
+      setServiceGroups(result?.data);
     };
   
     fetchData();
   }, []);
 
 
-      useEffect(() => {
-     const getServiceById = async () => {
-       const result = await  dispatch(getService(id));
-     setFormData({
-          name:result.name,
-    category:result.ServiceGroup,
-    unitMeasure: result.unitType, 
-    basePrice: result.basePrice,
-    description:result.description,
-     })
-     
-      
-     };
-   
-   getServiceById();
-   }, []);
+ useEffect(() => {
+  const getServiceById = async () => {
+    try {
+      const result = await dispatch(getService(id));
+      setFormData({
+        name: result.name,
+        category: result.ServiceGroup,
+        unitMeasure: result.unitType,
+        basePrice: result.basePrice,
+        description: result.description,
+      });
+    } catch (error) {
+      console.error("Failed to load service", error);
+    }
+  };
 
 
+  if (id) {
+    getServiceById();
+  }
+}, [id, dispatch]);
 
 
   const handleChange = (field) => (e) => {
@@ -100,7 +103,7 @@ const dispatch =useDispatch()
       description:formData.description,
       name:formData.name,
       groupId: formData.category.id,
-       unitType: formData.unitMeasure.name,
+       unitType: formData.unitMeasure,
       basePrice: parseFloat(formData.basePrice),
     };
 
