@@ -2,45 +2,21 @@ import {
   TOOL_CONSUMABLES_LOADED,
   UPDATE_TOOL_CONSUMABLE_PARAMS,
 } from "@root/redux/types";
-import { getApi } from "@helpers/api"; 
+import { getApi,putApi,postApi } from "@helpers/api"; 
 import { loaderOn, loaderOff } from "./loaderAction";
-
+import { errorHandler } from "@helpers/errorHandlers";
 export const getToolConsumables = (params) => async (dispatch) => {
   dispatch(loaderOn());
 
   try {
-    // const response = await getApi("/tools-consumables", params);
-    const mockData = [
-  {
-    id: 1,
-    name: "Hammer",
-    type: "Tool",
-    sku: "T001",
-    description: "Heavy-duty steel hammer",
-  },
-  {
-    id: 2,
-    name: "Gloves",
-    type: "Consumable",
-    sku: "C001",
-    description: "Safety gloves for handling",
-  },
-  {
-    id: 3,
-    name: "Screwdriver Set",
-    type: "Tool",
-    sku: "T002",
-    description: "Set of 6 precision screwdrivers",
-  },
-];
+ 
 
-       const filtered = mockData.filter(item =>
-      item.name.toLowerCase().includes(params.search.toLowerCase()) ||
-      item.type.toLowerCase().includes(params.search.toLowerCase()) ||
-      item.sku.toLowerCase().includes(params.search.toLowerCase())
-    );
-
-    dispatch({ type: TOOL_CONSUMABLES_LOADED, payload: { data: filtered, count: filtered.length } });
+    const response = await getApi("/service-management/tool&consumables", "", params);
+    if (response.status === 200) {
+    dispatch(loaderOff());
+    
+       return response.data
+    }
   } catch (err) {
     console.error(err);
   } finally {
@@ -48,8 +24,54 @@ export const getToolConsumables = (params) => async (dispatch) => {
   }
 };
 
-export const updateToolConsumableParams = (params) => ({
-  type: UPDATE_TOOL_CONSUMABLE_PARAMS,
-  payload: params,
-});
 
+export const createToolAndConsumable = (data) => async (dispatch) => {
+  dispatch(loaderOn());
+  try {
+    const response = await postApi("/service-management/create-tool&consumables", data); 
+    loaderOff()
+    if (response.status === 200) {
+      
+      return
+    }
+  } catch (err) {
+    errorHandler(err);
+  }
+  dispatch(loaderOff());
+};
+
+export const updateToolAndConsumables = (id, data) => async (dispatch) => {
+  dispatch(loaderOn());
+  try {
+ 
+    
+    const response = await putApi(
+      `/service-management/tool&consumables/${id}`,
+      data,
+      "PUT"
+    );
+
+    if (response.status === 200) { 
+    dispatch(loaderOff())
+return
+    }
+  } catch (err) {
+    errorHandler(err);
+  }
+  dispatch(loaderOff());
+};
+
+export const getToolConsumablesById = (id) => async (dispatch) => {
+    dispatch(loaderOn());
+    try {
+        const response = await getApi(`/service-management/tool&consumables/${id}`);
+        if (response.status === 200) {
+            dispatch(loaderOff());
+ 
+            return response.data.data;
+        }
+    } catch (error) {
+        dispatch(loaderOff());
+        errorHandler(error);
+    }
+};

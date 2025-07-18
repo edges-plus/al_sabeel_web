@@ -1,55 +1,95 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import Container from "@components/DashboardLayout/container";
+import { useNavigate, useParams } from "react-router-dom";
+import Container from "@components/DashboardLayout/Container";
 import DataTable from "@components/DataTable";
 import { Button } from "@mui/material";
+import { getToolConsumables ,createToolAndConsumable,updateToolAndConsumables} from "@root/redux/actions/toolConsumableActions";
 import {
-  getToolConsumables,
-  updateToolConsumableParams,
-} from "@root/redux/actions/toolConsumableActions";
-import { isRequired, validate, combineValidators } from "@root/utils/validators";
+  isRequired,
+  validate,
+  combineValidators,
+} from "@root/utils/validators";
 import ToolConsumableModal from "@pages/ServiceManagement/ToolsConsumables/ToolConsumableModal";
-
+import useDebouncedSearch from "@root/utils/useDebouncedSearch";
 
 const Index = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { toolConsumables, params } = useSelector((state) => state.toolConsumable);
+const [editingId, setEditingId] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
-  const [formData, setFormData] = useState({ name: "", type: "",  description: "" });
+  const [formData, setFormData] = useState({
+    name: "",
+    type: "",
+    description: "",
+  });
   const [errors, setErrors] = useState({});
 
   const validatorMap = {
-  name: isRequired,
-  type: isRequired,
-};
+    name: isRequired,
+    type: isRequired,
+  };
+
+  const [toolAndConsumables, setToolConsumables] = useState();
+  const [totalRows, setTotalRows] = useState(0);
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [searchText, setSearchText] = useState("");
+
+
+
+
+
+  const fetchToolConsumables = async () => {
+ const result = await dispatch(getToolConsumables({
+  page,
+  rowsPerPage,
+  order: "DESC",
+  search: searchText,
+}));
+    setToolConsumables( result?.data)
+    setTotalRows(result.count || 0);
+  };
+  const debouncedSearch = useDebouncedSearch(fetchToolConsumables, 500);
 
   useEffect(() => {
-    dispatch(getToolConsumables(params));
-  }, [dispatch, params.page, params.rowsPerPage, params.search]);
+    debouncedSearch();
+  }, [page, searchText, rowsPerPage]);
+
+  const addToolConsumable = () => {
+    setFormData({ name: "", type: "", description: "" });
+    setModalOpen(true);
+  };
 
   const handleSearchChange = (e) => {
-    dispatch(updateToolConsumableParams({ ...params, search: e.target.value, page: 1 }));
+    setSearchText(e.target.value);
   };
 
   const clearSearch = () => {
-    dispatch(updateToolConsumableParams({ ...params, search: "", page: 1 }));
+    setSearchText("");
   };
 
-  const addToolConsumable = () => {
-     setFormData({ name: "", type: "", description: "" }); 
-     setModalOpen(true);
-  };
 
-  const updateParams = (newParams) => {
-    dispatch(updateToolConsumableParams(newParams));
-  };
+
+const handleEdit = (id) => {
+  const item = toolAndConsumables.find((el) => el.id === id);
+  if (item) {
+    setFormData({
+      name: item.name,
+      type: item.type,
+      SKU:item.SKU,
+      description: item.description,
+    });
+    setEditingId(id);
+    setModalOpen(true);
+  }
+};
+
 
   const columns = [
     { key: "name", label: "Name" },
     { key: "type", label: "Type" },
-    { key: "sku", label: "SKU" },
+    { key: "SKU", label: "SKU" },
     { key: "description", label: "Description" },
     {
       key: "actions",
@@ -59,7 +99,8 @@ const Index = () => {
           variant="contained"
           size="small"
           color="secondary"
-          onClick={() => navigate(`/ServiceManagement/tools-consumables/edit/${row.id}`)}
+        onClick={() => handleEdit(row.id)}
+
           sx={{ textTransform: "none", borderRadius: 1 }}
         >
           Edit
@@ -67,17 +108,25 @@ const Index = () => {
       ),
     },
   ];
-const handleSubmit = () => {
-  const newErrors = validate(formData, validatorMap);
-  setErrors(newErrors);
+  const handleSubmit = () => {
+    const newErrors = validate(formData, validatorMap);
+    setErrors(newErrors);
 
-  if (Object.keys(newErrors).length > 0) return;
-
-  // Submit logic here (e.g., dispatch action)
-  console.log("Submitted:", formData);
-  setModalOpen(false);
-};
-
+    if (Object.keys(newErrors).length > 0) return;
+    try {
+     if (editingId) {
+    
+       dispatch(updateToolAndConsumables(editingId,formData));
+      
+      } else {
+        dispatch(createToolAndConsumable(formData));
+      }
+       setModalOpen(false)
+    fetchToolConsumables()
+    } catch (err) {
+      console.error("Error submitting form", err);
+    }
+  };
 
   return (
     <Container
@@ -88,33 +137,39 @@ const handleSubmit = () => {
       divider={true}
       yScrol={{}}
       showSearch={true}
-      searchValue={params.search}
+      searchValue={searchText}
       onSearchChange={handleSearchChange}
       onClearSearch={clearSearch}
       searchPlaceholder="Search by name, type or SKU"
     >
       <DataTable
         columns={columns}
-        data={toolConsumables}
+        data={toolAndConsumables}
         emptyMessage="No tools or consumables found."
         titleField="name"
-        params={params}
-        updateParams={updateParams}
+          params={{
+          count: totalRows,
+          rowsPerPage: rowsPerPage,
+          page: page,
+        }}
+         updateParams={({ page, rowsPerPage }) => {
+          setPage(page);
+          setRowsPerPage(rowsPerPage);
+        }}
         onRowClick={() => {}}
-        count={params.count}
       />
       <ToolConsumableModal
         open={modalOpen}
         onClose={() => {
-            setModalOpen(false);
-            setErrors({}); 
-            }}
+          setModalOpen(false);
+          setErrors({});
+        }}
         onSubmit={handleSubmit}
         formData={formData}
         setFormData={setFormData}
         errors={errors}
         setErrors={setErrors}
-        />
+      />
     </Container>
   );
 };
