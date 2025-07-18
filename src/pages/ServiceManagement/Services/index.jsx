@@ -23,7 +23,7 @@ const Index = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchText, setSearchText] = useState("");
 
-  const debouncedSearch = useDebouncedSearch(fetchService, 500);
+
 
 
   const fetchService = async () => {
@@ -38,7 +38,7 @@ const Index = () => {
     setServices(result.data);
        setTotalRows(result.count || 0);
   };
-
+  const debouncedSearch = useDebouncedSearch(fetchService, 500);
   useEffect(() => {
     debouncedSearch();
    
