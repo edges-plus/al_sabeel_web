@@ -9,13 +9,14 @@ import {
   useTheme
 } from '@mui/material';
 import {
-  Payment,
+  Payment,People
 } from '@mui/icons-material';
 import { useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 // Import the tab components
 import Account from '@pages/Account';
+import User from '@pages/User';
 
 function SettingsPage() {
   const theme = useTheme();
@@ -30,6 +31,13 @@ function SettingsPage() {
       path: 'account',
       component: <Account />,
       permission: 'app.accounts',
+    },
+    {
+      label: 'Users',
+      icon: <People />,
+      path: 'users',
+      component: <User />,
+      permission: 'app.users',
     },
   ];
 

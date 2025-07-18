@@ -10,14 +10,15 @@ import { loaderOn, loaderOff } from "./loaderAction";
 
 export const getServices = (params = {}) => async (dispatch) => {
 
+
     dispatch(loaderOn());
     try {
       const response = await getApi("/service-management/services", "", params);
-     
+   
     dispatch(loaderOff())
       if (response.status === 200) {
        
-       return response.data.data
+       return response.data
       }
     } catch (err) {
       errorHandler(err);
@@ -28,10 +29,10 @@ export const getServices = (params = {}) => async (dispatch) => {
 export const createService = (data) => async (dispatch) => {
   dispatch(loaderOn());
   try {
-    console.log("data issssssssss",data);
+  
     
     const response = await postApi("/service-management/create-service", data);
-    console.log("respone issssssss",response);
+   
     
     if (response.status === 200) {
  
@@ -48,10 +49,10 @@ export const updateService= (id, data) => async (dispatch) => {
   try {
 
     const response = await putApi(`/service-management/service/${id}`, data);
-    if (response.status === 200) {
-     getServices()
-      
 
+    if (response.status === 200) {
+    dispatch(loaderOff());
+       return
     }
   } catch (err) {
     errorHandler(err);
@@ -59,9 +60,17 @@ export const updateService= (id, data) => async (dispatch) => {
   dispatch(loaderOff());
 };
 
-export const updateServiceGroupParams = (params) => (dispatch) => {
-  dispatch({
-    type: UPDATE_SERVICE_GROUP_PARAMS,
-    payload: params,
-  });
+export const getService = (id) => async (dispatch) => {
+    dispatch(loaderOn());
+    try {
+        const response = await getApi(`/service-management/service/${id}`);
+        if (response.status === 200) {
+            dispatch(loaderOff());
+ 
+            return response.data.data;
+        }
+    } catch (error) {
+        dispatch(loaderOff());
+        errorHandler(error);
+    }
 };

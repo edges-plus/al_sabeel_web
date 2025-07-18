@@ -2,8 +2,9 @@ import React from "react";
 import { Box, Typography, Grid } from "@mui/material";
 import CategoryIcon from "@mui/icons-material/Category";
 import BuildIcon from "@mui/icons-material/Build";
-import HandymanIcon from "@mui/icons-material/Handyman"; // For Tools & Consumables
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart"; // For Purchases
+import HandymanIcon from "@mui/icons-material/Handyman";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart"; 
+import GroupsIcon from "@mui/icons-material/Groups"; 
 
 import { useNavigate } from "react-router-dom";
 import NavigationCard from "@components/NavigationCard.jsx";
@@ -17,11 +18,8 @@ const Index = () => {
       icon: <CategoryIcon />,
       onClick: () => navigate("/ServiceManagement/service-groups"),
     },
-
-        {
-
+    {
       title: "Services",
-
       icon: <BuildIcon />,
       onClick: () => navigate("/ServiceManagement/services"),
     },
@@ -34,6 +32,11 @@ const Index = () => {
       title: "Material Purchases",
       icon: <ShoppingCartIcon />,
       onClick: () => navigate("/ServiceManagement/purchases"),
+    },
+    {
+      title: "Crews",
+      icon: <GroupsIcon />,
+      onClick: () => navigate("/ServiceManagement/crews"),
     },
   ];
 

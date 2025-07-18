@@ -7,8 +7,6 @@ import journalEntryReducer from "@root/redux/reducers/journalEntry.reducer";
 import invoiceReducer from "@root/redux/reducers/invoiceReducer";
 import customerReducer from "@root/redux/reducers/customerReducer";
 
-import toolConsumableReducer from "@root/redux/reducers/toolConsumable.reducer";
-
 
 
 export default combineReducers({
@@ -18,10 +16,7 @@ export default combineReducers({
   account: accountReducer,
   journalEntry: journalEntryReducer,
   invoice: invoiceReducer,
-
   customer: customerReducer,
-  toolConsumable: toolConsumableReducer,
-
 
 
 });

@@ -5,6 +5,7 @@ const useDebouncedSearch = (searchFunction, delay = 400) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const debouncedSearch = useCallback(
         debounce((value) => {
+              console.log("Debounced triggered with:", value);
             searchFunction(value);
         }, delay),
         [searchFunction, delay]
