@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Grid, Button, IconButton } from "@mui/material";
 import { Add, Delete } from "@mui/icons-material";
@@ -7,7 +7,7 @@ import FormContainer from "@components/FormContainer";
 import FormTextField from "@components/FormTextField";
 import FormDatePicker from "@components/FormDatePicker";
 import FormAutoComplete from "@components/FormAutoComplete";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createWorkEntry } from "@root/redux/actions/AddWorkActions";
 import { getCustomers } from "@root/redux/actions/customerActions";
 
@@ -34,7 +34,7 @@ const AddWorkForm = () => {
     nextProcess: "",
   });
 
-  const [Works, setWorks] = useState([
+  const [Service, setService] = useState([
     {
       service: null,
       unitOfMeasure: "",
@@ -52,14 +52,14 @@ const AddWorkForm = () => {
   };
 
   const handleWorkLineChange = (index, field, value) => {
-    const updatedLines = [...Works];
+    const updatedLines = [...Service];
     updatedLines[index][field] = value;
-    setWorks(updatedLines);
+    setService(updatedLines);
   };
 
   const addWorkLine = () => {
-    setWorks([
-      ...Works,
+    setService([
+      ...Service,
       {
         service: null,
         unitOfMeasure: "",
@@ -71,8 +71,8 @@ const AddWorkForm = () => {
   };
 
   const removeWorkLine = (index) => {
-    const updatedLines = Works.filter((_, i) => i !== index);
-    setWorks(updatedLines);
+    const updatedLines = Service.filter((_, i) => i !== index);
+    setService(updatedLines);
   };
 
   const handleSubmit = async (e) => {
@@ -89,7 +89,7 @@ const AddWorkForm = () => {
 
     const payload = {
       ...formData,
-      Works: Works.map((w) => ({
+      Service: Service.map((w) => ({
         serviceId: w.service?.id,
         unitOfMeasure: w.unitOfMeasure,
         unitPrice: parseFloat(w.unitPrice),
@@ -100,7 +100,7 @@ const AddWorkForm = () => {
 
     const result = await dispatch(createWorkEntry(payload));
     if (result) {
-      navigate("/works");
+      navigate("/Service");
     }
   };
 
@@ -151,7 +151,7 @@ const AddWorkForm = () => {
             size={{ md: 6, xs: 12 }}
           />
 
-          {Works.map((line, index) => (
+          {Service.map((line, index) => (
             <Grid
               size={{ xs: 12, md: 12 }}
               key={index}
@@ -246,7 +246,7 @@ const AddWorkForm = () => {
                 <IconButton
                   color="error"
                   onClick={() => removeWorkLine(index)}
-                  disabled={Works.length === 1}
+                  disabled={Service.length === 1}
                 >
                   <Delete />
                 </IconButton>
