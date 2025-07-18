@@ -11,37 +11,41 @@ import {
   getServices,
   updateService,
 } from "@root/redux/actions/serviceActions"; 
+import useDebouncedSearch from "@root/utils/useDebouncedSearch";
 
-const ServiceGroupPage = () => {
+const Index = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [services,setServices]=useState([])
- const [totalRows, setTotalRows] = useState(0);
+  const [services, setServices] = useState([]);
+
+  const [totalRows, setTotalRows] = useState(0);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchText, setSearchText] = useState("");
- const [count, seCount] = useState("");
 
- 
- 
+  const debouncedSearch = useDebouncedSearch(fetchService, 500);
+
+
+  const fetchService = async () => {
+    const result = await dispatch(getServices(
+      { page,
+        rowsPerPage,
+        order: "DESC",
+        search: searchText
+      }
+    ));
+
+    setServices(result.data);
+       setTotalRows(result.count || 0);
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await  dispatch(getServices(
-        { page,
-          rowsPerPage,
-          order: "DESC",
-  }
-      ));
-     
-      
-      setServices(result);
-    };
-  
-    fetchData();
-  }, [page,searchText,totalRows]);
+    debouncedSearch();
+   
+  }, [page,searchText, rowsPerPage, ]);
 
 
-  const addServiceGroup = () => {
+  const addService = () => {
     navigate("/ServiceManagement/serviceGroup/Add");
   };
 
@@ -88,8 +92,8 @@ const ServiceGroupPage = () => {
 
   return (
     <Container
-      header="Service Groups"
-      buttonFunction={addServiceGroup}
+      header="Service"
+      buttonFunction={addService}
       buttonText="New"
       addButton={true}
       divider={true}
@@ -114,4 +118,4 @@ const ServiceGroupPage = () => {
   );
 };
 
-export default ServiceGroupPage;
+export default Index;
