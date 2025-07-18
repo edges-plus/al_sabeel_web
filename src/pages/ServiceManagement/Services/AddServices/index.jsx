@@ -8,7 +8,7 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import FormTextField from "@components/FormTextField";
 import FormAutoComplete from "@components/FormAutoComplete";
 import FormContainer from "@components/FormContainer";
@@ -19,24 +19,23 @@ import {
 } from "@root/redux/actions/serviceGroupActions";
 
 import {
- createService
+ createService,getService,updateService
 } from "@root/redux/actions/serviceActions"; 
 
 import { useDispatch } from "react-redux";
 
 
-const mockUnitMeasure = [
-  { id: 1, name: "Litre" },
-  { id: 2, name: "Kg" },
-];
+const mockUnitMeasure = [ "Litre", "Kg" ];
 
 const AddService = () => {
+    const { id } = useParams();
+
   const navigate = useNavigate();
 const [serviceGroups,setServiceGroups]=useState([])
   const [formData, setFormData] = useState({
     name: "",
     category: null,
-    unitMeasure: null,
+    unitMeasure:"", 
     basePrice: "",
     description: "",
   });
@@ -63,6 +62,25 @@ const dispatch =useDispatch()
   }, []);
 
 
+      useEffect(() => {
+     const getServiceById = async () => {
+       const result = await  dispatch(getService(id));
+     setFormData({
+          name:result.name,
+    category:result.ServiceGroup,
+    unitMeasure: result.unitType, 
+    basePrice: result.basePrice,
+    description:result.description,
+     })
+     
+      
+     };
+   
+   getServiceById();
+   }, []);
+
+
+
 
   const handleChange = (field) => (e) => {
     const value = e.target.value;
@@ -86,9 +104,18 @@ const dispatch =useDispatch()
       basePrice: parseFloat(formData.basePrice),
     };
 
-    console.log("Submitting service:", payload);
-   dispatch(createService(payload))
-    setTimeout(() => navigate("/ServiceManagement"), 1500);
+
+
+      try {
+          if (id) {
+           dispatch(updateService(id,payload));
+          } else {
+            dispatch(createService(payload));
+          }
+        navigate("/ServiceManagement")
+        } catch (err) {
+          console.error("Error submitting form", err);
+        }
   };
 
   return (
@@ -128,7 +155,7 @@ const dispatch =useDispatch()
               label="Unit Measure"
               options={mockUnitMeasure}
               value={formData.unitMeasure}
-              getOptionLabel={(option) => option.name}
+              getOptionLabel={(option) => option}
               onChange={(e, newValue) =>
                 setFormData((prev) => ({ ...prev, unitMeasure: newValue }))
               }

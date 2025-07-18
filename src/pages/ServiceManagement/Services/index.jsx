@@ -42,7 +42,7 @@ const ServiceGroupPage = () => {
 
 
   const addServiceGroup = () => {
-    navigate("/ServiceManagement/serviceGroup/Add");
+    navigate("/ServiceManagement/service/Add");
   };
 
   
@@ -77,7 +77,7 @@ const ServiceGroupPage = () => {
           variant="contained"
           size="small"
           color="secondary"
-          onClick={() => navigate(`/ServiceManagement/serviceGroup/Edit/${row.id}`)}
+          onClick={() => navigate(`/ServiceManagement/service/Edit/${row.id}`)}
           sx={{ textTransform: "none", borderRadius: 1 }}
         >
           Edit

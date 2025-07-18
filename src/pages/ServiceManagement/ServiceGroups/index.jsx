@@ -21,7 +21,7 @@ import {
   updateServiceGroup,
 
 } from "@root/redux/actions/serviceGroupActions";
-
+import useDebouncedSearch from "@root/utils/useDebouncedSearch";
 
 const Index = () => {
   const dispatch = useDispatch();
@@ -45,7 +45,7 @@ useEffect(() => {
   const handleOpenDialog = (category = null) => {
     if (category) {
       setEditingId(category.id);
-      setCategoryName(category.name);
+      setGroupName(category.name);
     } else {
       setEditingId(null);
       setGroupName("");
@@ -57,9 +57,10 @@ useEffect(() => {
     const name = groupName.trim();
     if (!name) return alert("Please enter a category name");
 
+
     if (editingId) {
-      dispatch(updateServiceGroup(editingId, { name })).then(() =>
-        dispatch(getServiceGroups(params))
+      dispatch(updateServiceGroup(editingId,{name})).then(() =>
+        dispatch(getServiceGroups())
       );
     } else {
       dispatch(createServiceGroup({ name })).then(() =>

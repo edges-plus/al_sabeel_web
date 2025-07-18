@@ -52,7 +52,7 @@ const CustomerListPage = () => {
           variant="contained"
           size="small"
           color="secondary"
-          onClick={() => navigate(`/Customer/Edit/${row.id}`)}
+          onClick={() => navigate(`/CRM/Customer/Edit/${row.id}`)}
           sx={{ textTransform: "none", borderRadius: 1 }}
         >
           Edit
