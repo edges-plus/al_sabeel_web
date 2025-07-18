@@ -21,7 +21,7 @@ import {
   updateServiceGroup,
 
 } from "@root/redux/actions/serviceGroupActions";
-
+import useDebouncedSearch from "@root/utils/useDebouncedSearch";
 
 const Index = () => {
   const dispatch = useDispatch();
@@ -29,41 +29,56 @@ const Index = () => {
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [groupName, setGroupName] = useState("");
-const [serviceGroups,setServiceGroups]=useState([])
-  // 🔁 Fetch categories when params change
-useEffect(() => {
-  const fetchData = async () => {
-    const result = await dispatch(getServiceGroups());
-    console.log("result",result);
-    
-    setServiceGroups(result);
-  };
+  const [serviceGroups, setServiceGroups] = useState([])
+    const [searchText, setSearchText] = useState('');
 
-  fetchData();
-}, []);
+    const [totalRows, setTotalRows] = useState(0);
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+
 
   const handleOpenDialog = (category = null) => {
     if (category) {
       setEditingId(category.id);
-      setCategoryName(category.name);
+      setGroupName(category.name);
     } else {
       setEditingId(null);
       setGroupName("");
     }
     setOpen(true);
   };
+  
 
+  const fetchServiceGroups = async (searchValue = searchText) => {
+    try {
+
+      const result = await dispatch(getServiceGroups({
+          page,
+          rowsPerPage,
+    
+          order: "DESC",
+          search: searchValue,
+        }));
+      setServiceGroups(result.data || []);
+      setTotalRows(result.count || 0);
+      return result;
+    } catch (error) {
+      console.error("Error fetching service groups:", error);
+      return { data: [], total: 0 };
+    }
+  };
   const handleSaveCategory = () => {
     const name = groupName.trim();
     if (!name) return alert("Please enter a category name");
 
     if (editingId) {
       dispatch(updateServiceGroup(editingId, { name })).then(() =>
-        dispatch(getServiceGroups(params))
+        dispatch(fetchServiceGroups())
       );
     } else {
       dispatch(createServiceGroup({ name })).then(() =>
-        dispatch(getServiceGroups())
+        dispatch(fetchServiceGroups())
       );
     }
 
@@ -71,15 +86,17 @@ useEffect(() => {
     setGroupName("");
     setEditingId(null);
   };
+  const debouncedFetchServiceGroups = useDebouncedSearch(fetchServiceGroups, 500);
 
   const handleSearchChange = (e) => {
-    dispatch(
-      updateServiceCategoryParams({ search: e.target.value, page: 1 })
-    );
+    setSearchText(e.target.value);
   };
+  useEffect(() => {
+    debouncedFetchServiceGroups(searchText);
+  }, [searchText, page, rowsPerPage]);
 
   const clearSearch = () => {
-    dispatch(updateServiceCategoryParams({ search: "", page: 1 }));
+    setSearchText("");
   };
 
   const columns = [
@@ -109,7 +126,7 @@ useEffect(() => {
       divider={true}
       yScrol={{}}
       showSearch={true}
-     // searchValue={params.search}
+        searchValue={searchText}
       onSearchChange={handleSearchChange}
       onClearSearch={clearSearch}
       searchPlaceholder="Search by category name"
@@ -119,12 +136,17 @@ useEffect(() => {
         data={serviceGroups}
         emptyMessage="No categories found."
         titleField="name"
-       // params={params}
-        updateParams={(newParams) =>
-          dispatch(updateServiceCategoryParams(newParams))
-        }
-        onRowClick={() => {}}
-       // count={count}
+       params={{
+          count: totalRows,
+          rowsPerPage: rowsPerPage,
+          page: page,
+        }}
+         updateParams={({ page, rowsPerPage }) => {
+          setPage(page);
+          setRowsPerPage(rowsPerPage);
+        }}
+        onRowClick={() => { }}
+
       />
 
       <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm">

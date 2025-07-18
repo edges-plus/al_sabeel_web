@@ -4,22 +4,22 @@ import { loaderOn, loaderOff } from "./loaderAction";
 
 export const getServiceGroups =
   (params = {}) =>
-  async (dispatch) => {
-    dispatch(loaderOn());
-    try {
-      delete params.count;
-      const response = await getApi("/service-management/service-groups", "", params);
-   
-   dispatch(loaderOff());
-          if (response.status === 200) {
-       return response.data.data
+    async (dispatch) => {
+      dispatch(loaderOn());
+      try {
+        delete params.count;
+        const response = await getApi("/service-management/service-groups", "", params);
+
+        dispatch(loaderOff());
+        if (response.status === 200) {
+          return response.data
+        }
+
+      } catch (err) {
+        errorHandler(err);
       }
-   
-    } catch (err) {
-      errorHandler(err);
-    }
-    dispatch(loaderOff());
-  };
+      dispatch(loaderOff());
+    };
 
 export const createServiceGroup = (data) => async (dispatch) => {
   dispatch(loaderOn());
